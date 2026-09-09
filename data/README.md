@@ -1,5 +1,7 @@
 # data
 
+> **Not populated yet.** No CSVs are committed here — this describes what `tools/extract_dump.py` is designed to produce once it's written. See the root [README](../README.md#status) for current status.
+
 CSV export of the PostgreSQL database in `Namaa_backup.dump`.
 
 Regenerate with:
