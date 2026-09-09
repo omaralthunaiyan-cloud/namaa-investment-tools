@@ -36,6 +36,7 @@ Namaa started as an IS499 senior project — PostgreSQL, a pile of Python script
 | `tools/` (dump → CSV → payload) | not started |
 | `tests/` (parity suite) | not started |
 | Original IS499 scripts in `reference/original/` | not yet committed |
+| [`.github/workflows/pages.yml`](.github/workflows/pages.yml) — builds `web/` and deploys it to Pages on every push to `main` | in place, but will fail until `web/` exists — that's expected until the port lands |
 
 If you're reading this from a job application or a portfolio link: this is the design phase of the rebuild, done properly before writing code against it. See [Roadmap](#roadmap) for what's next.
 
