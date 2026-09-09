@@ -1,5 +1,7 @@
 # Data
 
+> **Design document.** `data/*.csv` and `tools/extract_dump.py` haven't been generated or written yet — this documents the tables and known quirks so extraction is done right the first time. See the root [README](../README.md#status) for current status.
+
 Everything traces to `Namaa_backup.dump`, a PostgreSQL 17 custom-format dump taken on 24 November 2025.
 
 ## Getting at it

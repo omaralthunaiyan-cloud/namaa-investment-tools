@@ -1,5 +1,7 @@
 # Architecture
 
+> **Design document.** This describes the pipeline the implementation is planned to follow. `tools/`, `engine/`, and `web/` don't exist in this repository yet — see the root [README](../README.md#status) for current status.
+
 ## The constraint that shaped everything
 
 The original ran as a PostgreSQL database, a Flask API on `localhost:5000`, a Next.js dev server, and a handful of scripts with `C:\Users\Admin\Desktop\...` paths hardcoded in them. Four processes and a database to see a table of dividend recommendations.

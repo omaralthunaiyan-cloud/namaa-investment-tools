@@ -1,6 +1,8 @@
 # Model card — annual close price predictor
 
-Read this before quoting a number from the growth tool.
+> **Design document.** `engine/growth.py` hasn't been written yet — the figures below (R², RMSE, MAE) come from training runs against the original IS499 scripts and are the target the ported model is expected to reproduce. See the root [README](../README.md#status) for current status.
+
+Read this before quoting a number from the growth tool, once it exists.
 
 ## What it is
 
