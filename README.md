@@ -8,10 +8,15 @@ Four decision tools for Tadawul-listed companies: which dividend payers to hold,
 
 Namaa started as an IS499 senior project — PostgreSQL, a pile of Python scripts, a Streamlit page, and a separate Next.js prototype that talked to a Flask API. This repository is that work rebuilt to run as a single page: the actual database dump, extracted and compressed into the page itself, with the four tools' logic ported faithfully from the original scripts.
 
+<p align="center">
+  <img src="docs/screenshots/home.png" width="880" alt="Namaa home dashboard — four investment tools">
+</p>
+
 ---
 
 ## Contents
 
+- [Screenshots](#screenshots)
 - [Status](#status)
 - [The four tools](#the-four-tools)
 - [How it's built](#how-its-built)
@@ -20,6 +25,23 @@ Namaa started as an IS499 senior project — PostgreSQL, a pile of Python script
 - [Reproducing the build](#reproducing-the-build)
 - [Layout](#layout)
 - [Not investment advice](#not-investment-advice)
+
+---
+
+## Screenshots
+
+A dashboard hands off to four full-page tools, each with a "Back to Dashboard" link — no tabs, no client-side framework, just plain sections shown and hidden by a few lines of JavaScript.
+
+<table>
+<tr>
+<td width="50%"><img src="docs/screenshots/dividend-results.png" alt="Recommend Dividend Companies — three scored portfolio options"></td>
+<td width="50%"><img src="docs/screenshots/growth-results.png" alt="Recommend Growth Companies — Random Forest ranking with allocation"></td>
+</tr>
+<tr>
+<td align="center"><sub>Recommend Dividend Companies — three scored portfolios</sub></td>
+<td align="center"><sub>Recommend Growth Companies — model ranking + allocation</sub></td>
+</tr>
+</table>
 
 ---
 
@@ -189,6 +211,7 @@ tools/
   train_model.py         data/*.csv -> the Random Forest + its predictions
   build_payload.py       data/*.csv -> web/data.js
 docs/                  architecture rationale, data provenance, model card
+  screenshots/           README images, generated from the live app
 reference/original/    the untouched IS499 scripts, for provenance
 .github/workflows/     GitHub Pages deploy on push to main
 ```
