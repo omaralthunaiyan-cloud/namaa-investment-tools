@@ -1,0 +1,644 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Namaa — Tadawul Investment Tools</title>
+<style>
+  :root{
+    --bg:#f7f7f5; --panel:#ffffff; --border:#e3e2dd; --text:#1c1b19; --muted:#6b6a63;
+    --accent:#0f6b52; --accent-ink:#ffffff; --accent-soft:#e6f2ee;
+    --warn-bg:#fdf3e7; --warn-border:#eecfa0; --warn-text:#7a4c0f;
+    --table-stripe:#faf9f6; --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#15161a; --panel:#1c1e24; --border:#2b2d34; --text:#e8e7e3; --muted:#9a9a94;
+      --accent:#3fbf94; --accent-ink:#0c1210; --accent-soft:#173029;
+      --warn-bg:#2a2115; --warn-border:#5a4520; --warn-text:#e0b568;
+      --table-stripe:#20222a;
+    }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.45}
+  a{color:var(--accent)}
+  .wrap{max-width:1000px;margin:0 auto;padding:24px 20px 64px}
+  header.top{border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:20px}
+  header.top h1{margin:0 0 6px;font-size:26px;letter-spacing:-0.01em}
+  header.top p.tag{margin:0 0 10px;color:var(--muted);max-width:70ch}
+  .badges{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;color:var(--muted)}
+  .badges span{border:1px solid var(--border);border-radius:99px;padding:3px 10px;background:var(--panel)}
+  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:20px 0 18px;border-bottom:1px solid var(--border)}
+  nav.tabs button{appearance:none;border:none;background:transparent;color:var(--muted);font-size:14px;padding:10px 14px;cursor:pointer;border-bottom:2px solid transparent;font-weight:600}
+  nav.tabs button.active{color:var(--accent);border-bottom-color:var(--accent)}
+  nav.tabs button:hover{color:var(--text)}
+  section.tool{display:none}
+  section.tool.active{display:block}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px}
+  .panel + .panel{margin-top:16px}
+  h2{font-size:18px;margin:0 0 4px}
+  h3{font-size:14px;margin:0 0 10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+  p.desc{color:var(--muted);margin:0 0 16px;max-width:75ch;font-size:14px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:14px}
+  label{display:block;font-size:12px;font-weight:600;color:var(--muted);margin-bottom:5px}
+  input[type=number],input[type=text],select{width:100%;padding:8px 10px;border:1px solid var(--border);border-radius:8px;background:var(--bg);color:var(--text);font-size:14px}
+  input:focus,select:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;max-height:160px;overflow:auto;border:1px solid var(--border);border-radius:8px;padding:8px;background:var(--bg)}
+  .chip{display:flex;align-items:center;gap:5px;font-size:12.5px;border:1px solid var(--border);border-radius:99px;padding:4px 9px;background:var(--panel);cursor:pointer;user-select:none}
+  .chip input{margin:0}
+  .chip.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+  .row-actions{display:flex;gap:10px;align-items:center;margin-top:6px}
+  button.primary{background:var(--accent);color:var(--accent-ink);border:none;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer}
+  button.primary:hover{filter:brightness(1.06)}
+  button.ghost{background:transparent;border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 14px;font-size:13px;cursor:pointer}
+  .note{font-size:12.5px;color:var(--muted)}
+  .warn{background:var(--warn-bg);border:1px solid var(--warn-border);color:var(--warn-text);border-radius:10px;padding:10px 14px;font-size:13px;margin-bottom:16px}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);white-space:nowrap}
+  tbody tr:nth-child(even){background:var(--table-stripe)}
+  th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.03em}
+  .option-card{border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin-bottom:14px}
+  .option-card h4{margin:0 0 8px;font-size:14px}
+  .kv{display:flex;flex-wrap:wrap;gap:16px;margin-top:10px;font-size:13px;color:var(--muted)}
+  .kv b{color:var(--text)}
+  .empty{color:var(--muted);font-size:13.5px;padding:14px 0}
+  .tablewrap{overflow-x:auto}
+  footer{margin-top:36px;padding-top:16px;border-top:1px solid var(--border);color:var(--muted);font-size:12.5px}
+  .pill{display:inline-block;font-size:11px;border-radius:99px;padding:2px 8px;background:var(--accent-soft);color:var(--accent);font-weight:700;margin-left:6px}
+  .datalist-input{position:relative}
+  .suggestions{position:absolute;z-index:5;left:0;right:0;top:100%;background:var(--panel);border:1px solid var(--border);border-radius:8px;margin-top:4px;max-height:220px;overflow:auto;display:none}
+  .suggestions div{padding:7px 10px;cursor:pointer;font-size:13.5px}
+  .suggestions div:hover{background:var(--accent-soft)}
+  .stat{font-size:12.5px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Namaa — Tadawul Investment Tools</h1>
+    <p class="tag">Four decision tools for Tadawul-listed companies, running entirely in this page against the real IS499 database dump — no server, no install, nothing sent anywhere.</p>
+    <div class="badges">
+      <span id="badge-companies">— companies</span>
+      <span id="badge-payers">— dividend payers</span>
+      <span id="badge-growth">— growth-ranked</span>
+      <span><a href="https://github.com/omaralthunaiyan-cloud/namaa-investment-tools" target="_blank" rel="noopener">source on GitHub</a></span>
+    </div>
+  </header>
+
+  <div class="warn"><b>Not investment advice.</b> Every number here comes from historical filings and a Random Forest model trained on 185 companies (see the Growth tool for the model card). Treat outputs as a ranking signal, not a forecast — check filings before acting on anything.</div>
+
+  <nav class="tabs">
+    <button data-tab="dividends" class="active">Recommend Dividend Companies</button>
+    <button data-tab="months">Companies by Dividend Months</button>
+    <button data-tab="indices">Indices for a Company</button>
+    <button data-tab="growth">Recommend Growth Companies</button>
+  </nav>
+
+  <!-- ============ TOOL 1: DIVIDENDS ============ -->
+  <section class="tool active" id="tool-dividends">
+    <div class="panel">
+      <h2>Recommend Dividend Companies</h2>
+      <p class="desc">Give it an amount and a split between <i>coverage</i> (how many months of the year the portfolio pays in) and <i>profit</i> (trailing yield). It shortlists the 25 best candidates by <code>yield + 10 × months paid</code>, then searches combinations of that shortlist for the three portfolios that best match your preference.</p>
+      <div class="grid">
+        <div>
+          <label for="d-amount">Amount (SAR)</label>
+          <input type="number" id="d-amount" value="10000" min="1">
+        </div>
+        <div>
+          <label for="d-cov">Coverage preference</label>
+          <select id="d-cov">
+            <option value="0">0%</option>
+            <option value="25">25%</option>
+            <option value="50" selected>50%</option>
+            <option value="75">75%</option>
+            <option value="100">100%</option>
+          </select>
+        </div>
+        <div>
+          <label>Profit preference</label>
+          <input type="text" id="d-profit-display" disabled value="50%">
+        </div>
+        <div>
+          <label for="d-min">Min companies</label>
+          <input type="number" id="d-min" value="2" min="1" max="8">
+        </div>
+        <div>
+          <label for="d-max">Max companies</label>
+          <input type="number" id="d-max" value="5" min="1" max="8">
+        </div>
+      </div>
+      <label>Sectors <span class="note">(none selected = all)</span></label>
+      <div class="chips" id="d-sectors"></div>
+      <div class="row-actions">
+        <button class="primary" id="d-run">Generate portfolios</button>
+        <span class="note" id="d-status"></span>
+      </div>
+    </div>
+    <div class="panel" id="d-results" style="display:none">
+      <h3>Results</h3>
+      <div id="d-options"></div>
+    </div>
+  </section>
+
+  <!-- ============ TOOL 2: MONTHS ============ -->
+  <section class="tool" id="tool-months">
+    <div class="panel">
+      <h2>Get Companies by Dividend Months</h2>
+      <p class="desc">Pick one or more months. A single month returns companies whose <i>entire</i> 2024 payout year was that month. Several months returns companies whose year was exactly that set. If nothing matches exactly, it falls back to the strongest single-month payer for each month separately.</p>
+      <label>Months</label>
+      <div class="chips" id="m-months"></div>
+      <div class="row-actions">
+        <button class="primary" id="m-run">Search</button>
+        <span class="note" id="m-status"></span>
+      </div>
+    </div>
+    <div class="panel" id="m-results" style="display:none">
+      <h3>Results <span id="m-branch" class="pill"></span></h3>
+      <div class="tablewrap"><table id="m-table"></table></div>
+    </div>
+  </section>
+
+  <!-- ============ TOOL 3: INDICES ============ -->
+  <section class="tool" id="tool-indices">
+    <div class="panel">
+      <h2>Get Indices for a Company</h2>
+      <p class="desc">Nine annual fundamentals for 246 companies across 2014–2024, gap-filled: a repeated row means "no new filing," not "no change in the business."</p>
+      <div class="grid">
+        <div class="datalist-input">
+          <label for="i-search">Company (symbol or name)</label>
+          <input type="text" id="i-search" placeholder="e.g. 2222 or Saudi Aramco" autocomplete="off">
+          <div class="suggestions" id="i-suggestions"></div>
+        </div>
+      </div>
+      <label>Indicators <span class="note">(none selected = all)</span></label>
+      <div class="chips" id="i-indicators"></div>
+      <label style="margin-top:12px">Years <span class="note">(none selected = all 2014–2024)</span></label>
+      <div class="chips" id="i-years"></div>
+      <div class="row-actions">
+        <button class="primary" id="i-run">Show indices</button>
+        <span class="note" id="i-status"></span>
+      </div>
+    </div>
+    <div class="panel" id="i-results" style="display:none">
+      <h3 id="i-title"></h3>
+      <div class="tablewrap"><table id="i-table"></table></div>
+    </div>
+  </section>
+
+  <!-- ============ TOOL 4: GROWTH ============ -->
+  <section class="tool" id="tool-growth">
+    <div class="panel">
+      <h2>Recommend Growth Companies</h2>
+      <p class="desc">A Random Forest predicts each company's average annual close price for 2025–2027 from its most recent fundamentals. Companies are ranked by projected return to 2027, and capital is split equally across the top of that ranking.</p>
+      <div class="grid">
+        <div>
+          <label for="g-amount">Amount (SAR)</label>
+          <input type="number" id="g-amount" value="15000" min="1">
+        </div>
+        <div>
+          <label for="g-top">Top N companies</label>
+          <input type="number" id="g-top" value="5" min="1" max="20">
+        </div>
+      </div>
+      <label>Sectors <span class="note">(none selected = all)</span></label>
+      <div class="chips" id="g-sectors"></div>
+      <div class="row-actions">
+        <button class="primary" id="g-run">Generate allocation</button>
+        <span class="note" id="g-status"></span>
+      </div>
+    </div>
+    <div class="panel" id="g-results" style="display:none">
+      <h3>Allocation</h3>
+      <div class="tablewrap"><table id="g-table"></table></div>
+      <div class="kv" id="g-totals"></div>
+    </div>
+    <div class="panel">
+      <h3>Model card</h3>
+      <div class="kv" id="g-model"></div>
+      <p class="desc" style="margin-top:10px">This is a regression on financial ratios, not a time-series model — it has no notion of momentum or market conditions. Projections are built by taking each company's <i>latest</i> fundamentals and only changing the year, so they answer "what would this be worth if the books stayed exactly as they are," not "what will happen." Large projected returns are usually companies whose last recorded price was low relative to what their fundamentals imply — sometimes a real mispricing, often a data-recency artefact.</p>
+    </div>
+  </section>
+
+  <footer>
+    Namaa started as an IS499 senior project. This page runs the real database export directly in your browser — see the <a href="https://github.com/omaralthunaiyan-cloud/namaa-investment-tools">repository</a> for the data pipeline, model card, and known quirks in the source data.
+  </footer>
+</div>
+
+<script src="data.js"></script>
+<script>
+"use strict";
+const D = window.NAMAA_DATA;
+
+// ---------------------------------------------------------------------
+// Derived lookups
+// ---------------------------------------------------------------------
+const companies = D.companies.map(([symbol, name, sector]) => ({symbol, name, sector}));
+const companyBySymbol = Object.fromEntries(companies.map(c => [c.symbol, c]));
+const sectors = [...new Set(companies.map(c => c.sector))].filter(s => s !== "Unknown").sort();
+const payerSymbols = Object.keys(D.dividendTtm);
+
+document.getElementById("badge-companies").textContent = `${companies.length} companies`;
+document.getElementById("badge-payers").textContent = `${payerSymbols.length} dividend payers`;
+document.getElementById("badge-growth").textContent = `${Object.keys(D.growth).length} growth-ranked`;
+
+function fmt(n, dp=2){ if(n===null||n===undefined||Number.isNaN(n)) return "—"; return Number(n).toLocaleString(undefined,{minimumFractionDigits:dp,maximumFractionDigits:dp}); }
+function el(tag, attrs={}, children=[]){
+  const e = document.createElement(tag);
+  for(const [k,v] of Object.entries(attrs)){
+    if(k==="text") e.textContent = v; else if(k==="html") e.innerHTML = v; else e.setAttribute(k,v);
+  }
+  for(const c of [].concat(children)) if(c) e.appendChild(c);
+  return e;
+}
+
+// ---------------------------------------------------------------------
+// Tabs
+// ---------------------------------------------------------------------
+document.querySelectorAll("nav.tabs button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll("nav.tabs button").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll("section.tool").forEach(s => s.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById("tool-" + btn.dataset.tab).classList.add("active");
+  });
+});
+
+// ---------------------------------------------------------------------
+// Chip helpers
+// ---------------------------------------------------------------------
+function buildChips(container, items, {multi=true}={}){
+  container.innerHTML = "";
+  const state = new Set();
+  items.forEach(({value, label}) => {
+    const chip = el("label", {class:"chip"});
+    const cb = el("input", {type: multi?"checkbox":"radio", value});
+    cb.addEventListener("change", () => {
+      if(cb.checked){ state.add(value); chip.classList.add("on"); }
+      else { state.delete(value); chip.classList.remove("on"); }
+    });
+    chip.appendChild(cb);
+    chip.appendChild(document.createTextNode(label));
+    container.appendChild(chip);
+  });
+  return state;
+}
+
+// Sectors chips (shared builder used by tools 1 & 4)
+const dSectorState = buildChips(document.getElementById("d-sectors"), sectors.map(s=>({value:s,label:s})));
+const gSectorState = buildChips(document.getElementById("g-sectors"), sectors.map(s=>({value:s,label:s})));
+
+// Months chips (tool 2)
+const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const mMonthState = buildChips(document.getElementById("m-months"), monthNames.map((n,i)=>({value:String(i+1),label:n})));
+
+// Indicators chips (tool 3)
+const INDICATOR_MAP = {
+  capital: "Capital (SAR M)", total_liabilities: "Total Liabilities (SAR M)", net_income: "Net Income (SAR M)",
+  roe: "Return on Equity", roa: "Return on Assets", eps: "Earnings Per Share",
+  pe: "Price-to-Earnings", bvps: "Book Value Per Share", de: "Debt-to-Equity",
+};
+const PERCENTAGE_FIELDS = new Set(["roe","roa"]);
+const INDICATOR_ORDER = ["capital","total_liabilities","net_income","roe","roa","eps","pe","bvps","de"];
+const iIndicatorState = buildChips(document.getElementById("i-indicators"), INDICATOR_ORDER.map(k=>({value:k,label:INDICATOR_MAP[k]})));
+
+// Years chips (tool 3)
+const years = []; for(let y=2014;y<=2024;y++) years.push(y);
+const iYearState = buildChips(document.getElementById("i-years"), years.map(y=>({value:String(y),label:String(y)})));
+
+// Coverage/profit auto pairing
+document.getElementById("d-cov").addEventListener("change", e => {
+  document.getElementById("d-profit-display").value = (100 - Number(e.target.value)) + "%";
+});
+
+// ---------------------------------------------------------------------
+// TOOL 1: Recommend Dividend Companies
+// ---------------------------------------------------------------------
+function combinations(arr, k){
+  const results = [];
+  const combo = [];
+  function rec(start){
+    if(combo.length === k){ results.push(combo.slice()); return; }
+    for(let i=start;i<arr.length;i++){
+      combo.push(arr[i]);
+      rec(i+1);
+      combo.pop();
+    }
+  }
+  rec(0);
+  return results;
+}
+
+function coverageTargetMonths(pct){ return {0:0,25:3,50:6,75:9,100:12}[pct] ?? 6; }
+function coverageCloseness(monthsCount, target){ const diff = Math.abs(monthsCount-target); return Math.max(0, 100-(diff/12)*100); }
+
+document.getElementById("d-run").addEventListener("click", () => {
+  const amount = Number(document.getElementById("d-amount").value) || 0;
+  const covPref = Number(document.getElementById("d-cov").value);
+  const profPref = 100 - covPref;
+  const minC = Math.max(1, Number(document.getElementById("d-min").value) || 1);
+  const maxC = Math.max(minC, Number(document.getElementById("d-max").value) || minC);
+  const sectorFilter = dSectorState.size ? dSectorState : null;
+  const status = document.getElementById("d-status");
+
+  if(amount <= 0){ status.textContent = "Amount must be greater than 0."; return; }
+
+  let universe = payerSymbols.filter(s => companyBySymbol[s]);
+  if(sectorFilter) universe = universe.filter(s => sectorFilter.has(companyBySymbol[s].sector));
+  if(universe.length === 0){ status.textContent = "No companies match that sector filter."; document.getElementById("d-results").style.display="none"; return; }
+
+  const lastClose = D.lastClose;
+  const monthsMap = D.months2024;
+  const base = universe.map(s => {
+    const close = lastClose[s];
+    const ttm = D.dividendTtm[s];
+    const yieldPct = (close && close > 0) ? (ttm/close)*100 : 0;
+    const monthsCount = (monthsMap[s]||[]).length;
+    return {symbol:s, yieldPct, monthsCount, heuristic: yieldPct + 10*monthsCount};
+  });
+  base.sort((a,b)=>b.heuristic-a.heuristic);
+  const shortlist = base.slice(0,25);
+
+  const wCov = covPref/100, wProfit = profPref/100;
+  const targetM = coverageTargetMonths(covPref);
+  const bySymbol = Object.fromEntries(shortlist.map(x=>[x.symbol,x]));
+  const symbols = shortlist.map(x=>x.symbol);
+
+  let allCombos = [];
+  for(let r=minC; r<=Math.min(maxC, symbols.length); r++){
+    allCombos = allCombos.concat(combinations(symbols, r));
+  }
+  if(allCombos.length === 0){ status.textContent = "No combinations possible with that company range."; return; }
+
+  function scoreCombo(combo){
+    const rows = combo.map(s=>bySymbol[s]);
+    const avgYield = rows.reduce((a,r)=>a+r.yieldPct,0)/rows.length;
+    const monthsUnion = new Set();
+    combo.forEach(s => (monthsMap[s]||[]).forEach(m=>monthsUnion.add(m)));
+    const covClose = coverageCloseness(monthsUnion.size, targetM);
+    return {score: wCov*covClose + wProfit*avgYield, avgYield, monthsUnion};
+  }
+
+  const scored = allCombos.map(combo => ({combo, ...scoreCombo(combo)}));
+  scored.sort((a,b)=>b.score-a.score);
+
+  const top3 = [];
+  const seen = new Set();
+  for(const s of scored){
+    const key = s.combo.slice().sort().join(",");
+    if(seen.has(key)) continue;
+    seen.add(key);
+    top3.push(s);
+    if(top3.length===3) break;
+  }
+
+  const optionsDiv = document.getElementById("d-options");
+  optionsDiv.innerHTML = "";
+  top3.forEach((opt, idx) => {
+    const perCompany = amount / opt.combo.length;
+    const card = el("div",{class:"option-card"});
+    card.appendChild(el("h4",{text:`Option ${idx+1} — score ${opt.score.toFixed(1)}`}));
+    const table = el("table");
+    table.appendChild(el("tr",{},[el("th",{text:"Symbol"}),el("th",{text:"Company"}),el("th",{text:"Amount (SAR)"})]));
+    opt.combo.forEach(s => {
+      const c = companyBySymbol[s];
+      table.appendChild(el("tr",{},[el("td",{text:s}),el("td",{text:c.name}),el("td",{text:fmt(perCompany,2)})]));
+    });
+    card.appendChild(table);
+    const months = [...opt.monthsUnion].sort((a,b)=>a-b).map(m=>monthNames[m-1]).join(", ") || "none";
+    card.appendChild(el("div",{class:"kv"},[
+      el("span",{html:`<b>${((opt.monthsUnion.size/12)*100).toFixed(1)}%</b> coverage`}),
+      el("span",{html:`<b>${months}</b>`}),
+      el("span",{html:`<b>${opt.avgYield.toFixed(2)}%</b> avg. yield`}),
+    ]));
+    optionsDiv.appendChild(card);
+  });
+  document.getElementById("d-results").style.display = "block";
+  status.textContent = `${scored.length.toLocaleString()} combinations scored from a shortlist of ${shortlist.length}.`;
+});
+
+// ---------------------------------------------------------------------
+// TOOL 2: Get Companies by Dividend Months
+// ---------------------------------------------------------------------
+document.getElementById("m-run").addEventListener("click", () => {
+  const selected = [...mMonthState].map(Number).sort((a,b)=>a-b);
+  const status = document.getElementById("m-status");
+  const resultsPanel = document.getElementById("m-results");
+  const table = document.getElementById("m-table");
+  const branchPill = document.getElementById("m-branch");
+  table.innerHTML = "";
+  if(selected.length===0){ status.textContent = "Pick at least one month."; resultsPanel.style.display="none"; return; }
+
+  const monthsMap = D.months2024;
+  const selectedSet = new Set(selected);
+
+  function exactMatchSymbols(targetSet){
+    return Object.keys(monthsMap).filter(s => {
+      const ms = new Set(monthsMap[s]);
+      if(ms.size !== targetSet.size) return false;
+      for(const m of ms) if(!targetSet.has(m)) return false;
+      return true;
+    });
+  }
+
+  let rows = [];
+  let branch = "";
+
+  const exact = exactMatchSymbols(selectedSet);
+  if(exact.length){
+    branch = "exact match";
+    rows = exact.map(s => ({s, ttm: D.dividendTtm[s]||0, months: monthsMap[s]}));
+    rows.sort((a,b)=> b.ttm - a.ttm);
+  } else {
+    branch = "fallback: strongest single-month payer per month";
+    for(const m of selected){
+      const only = exactMatchSymbols(new Set([m]));
+      if(only.length===0) continue;
+      only.sort((a,b)=> (D.dividendTtm[b]||0)-(D.dividendTtm[a]||0));
+      const s = only[0];
+      rows.push({s, ttm: D.dividendTtm[s]||0, months:[m]});
+    }
+  }
+
+  if(rows.length===0){
+    status.textContent = "No companies found for that combination, including the fallback.";
+    resultsPanel.style.display = "none";
+    return;
+  }
+
+  branchPill.textContent = branch;
+  table.appendChild(el("tr",{},[el("th",{text:"Symbol"}),el("th",{text:"Company"}),el("th",{text:"Sector"}),el("th",{text:"Months paid (2024)"}),el("th",{text:"Trailing dividend"})]));
+  rows.forEach(r => {
+    const c = companyBySymbol[r.s];
+    if(!c) return;
+    table.appendChild(el("tr",{},[
+      el("td",{text:r.s}), el("td",{text:c.name}), el("td",{text:c.sector}),
+      el("td",{text:r.months.map(m=>monthNames[m-1]).join(", ")}),
+      el("td",{text:fmt(r.ttm,4)}),
+    ]));
+  });
+  resultsPanel.style.display = "block";
+  status.textContent = `${rows.length} companies.`;
+});
+
+// ---------------------------------------------------------------------
+// TOOL 3: Get Indices for a Company
+// ---------------------------------------------------------------------
+let iSelectedSymbol = null;
+const iSearch = document.getElementById("i-search");
+const iSuggestions = document.getElementById("i-suggestions");
+
+iSearch.addEventListener("input", () => {
+  const q = iSearch.value.trim().toLowerCase();
+  iSelectedSymbol = null;
+  iSuggestions.innerHTML = "";
+  if(!q){ iSuggestions.style.display="none"; return; }
+  const matches = companies.filter(c => c.symbol.toLowerCase()===q) .concat(
+    companies.filter(c => c.symbol.toLowerCase()!==q && (c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)))
+  ).filter((c,i,arr)=>arr.indexOf(c)===i).slice(0,15);
+  if(matches.length===0){ iSuggestions.style.display="none"; return; }
+  matches.forEach(c => {
+    const row = el("div",{text:`${c.symbol} — ${c.name}`});
+    row.addEventListener("click", () => {
+      iSearch.value = `${c.symbol} — ${c.name}`;
+      iSelectedSymbol = c.symbol;
+      iSuggestions.style.display = "none";
+    });
+    iSuggestions.appendChild(row);
+  });
+  iSuggestions.style.display = "block";
+});
+document.addEventListener("click", (e) => { if(!e.target.closest(".datalist-input")) iSuggestions.style.display="none"; });
+
+function resolveCompanyInput(raw){
+  if(iSelectedSymbol) return iSelectedSymbol;
+  const q = raw.trim().toLowerCase();
+  if(!q) return null;
+  const bySymbol = companies.find(c => c.symbol.toLowerCase()===q);
+  if(bySymbol) return bySymbol.symbol;
+  const byName = companies.find(c => c.name.toLowerCase().includes(q));
+  return byName ? byName.symbol : null;
+}
+
+function decodeIndices(symbol){
+  const entries = D.indices[symbol];
+  if(!entries) return [];
+  const rows = [];
+  let prevVals = null;
+  for(const entry of entries){
+    if(Array.isArray(entry)){
+      const [year, ...vals] = entry;
+      prevVals = vals;
+      rows.push({year, vals});
+    } else {
+      rows.push({year: entry, vals: prevVals});
+    }
+  }
+  return rows;
+}
+
+document.getElementById("i-run").addEventListener("click", () => {
+  const status = document.getElementById("i-status");
+  const resultsPanel = document.getElementById("i-results");
+  const table = document.getElementById("i-table");
+  const title = document.getElementById("i-title");
+  table.innerHTML = "";
+
+  const symbol = resolveCompanyInput(iSearch.value);
+  if(!symbol){ status.textContent = "Company not found."; resultsPanel.style.display="none"; return; }
+  const company = companyBySymbol[symbol];
+
+  let indicators = [...iIndicatorState];
+  if(indicators.length===0) indicators = INDICATOR_ORDER.slice();
+  indicators = INDICATOR_ORDER.filter(k => indicators.includes(k));
+
+  let selYears = [...iYearState].map(Number);
+  if(selYears.length===0) selYears = years.slice();
+  selYears.sort((a,b)=>a-b);
+
+  const allRows = decodeIndices(symbol);
+  const rows = allRows.filter(r => selYears.includes(r.year) && r.vals);
+  if(rows.length===0){ status.textContent = "No data available for that company/year selection."; resultsPanel.style.display="none"; return; }
+
+  title.textContent = `${company.name} (${symbol}) — ${company.sector}`;
+  const header = el("tr",{},[el("th",{text:"Year"})].concat(indicators.map(k=>el("th",{text:INDICATOR_MAP[k]}))));
+  table.appendChild(header);
+  rows.forEach(r => {
+    const cells = [el("td",{text:String(r.year)})];
+    indicators.forEach(k => {
+      const idx = INDICATOR_ORDER.indexOf(k);
+      const v = r.vals[idx];
+      let display = "—";
+      if(v !== null && v !== undefined){
+        display = PERCENTAGE_FIELDS.has(k) ? fmt(v*100,2)+"%" : fmt(v,2);
+      }
+      cells.push(el("td",{text:display}));
+    });
+    table.appendChild(el("tr",{},cells));
+  });
+  resultsPanel.style.display = "block";
+  status.textContent = `${rows.length} year(s).`;
+});
+
+// ---------------------------------------------------------------------
+// TOOL 4: Recommend Growth Companies
+// ---------------------------------------------------------------------
+const mm = D.modelMetrics;
+document.getElementById("g-model").innerHTML = `
+  <span><b>${mm.r2.toFixed(4)}</b> held-out R²</span>
+  <span><b>${mm.rmse.toFixed(2)} SAR</b> RMSE</span>
+  <span><b>${mm.mae.toFixed(2)} SAR</b> MAE</span>
+  <span><b>${mm.model_base_companies}</b> companies trained on</span>
+  <span><b>${mm.model_base_rows}</b> training rows</span>
+`;
+
+document.getElementById("g-run").addEventListener("click", () => {
+  const amount = Number(document.getElementById("g-amount").value) || 0;
+  const topN = Math.max(1, Number(document.getElementById("g-top").value) || 1);
+  const sectorFilter = gSectorState.size ? gSectorState : null;
+  const status = document.getElementById("g-status");
+  const resultsPanel = document.getElementById("g-results");
+  const table = document.getElementById("g-table");
+  const totalsDiv = document.getElementById("g-totals");
+  table.innerHTML = ""; totalsDiv.innerHTML = "";
+
+  if(amount<=0){ status.textContent="Amount must be greater than 0."; resultsPanel.style.display="none"; return; }
+
+  let candidates = Object.keys(D.growth).filter(s => companyBySymbol[s]);
+  if(sectorFilter) candidates = candidates.filter(s => sectorFilter.has(companyBySymbol[s].sector));
+  const rows = candidates.map(s => {
+    const [lastYear, lastPrice, p2025, p2026, p2027] = D.growth[s];
+    const roi = ((p2027-lastPrice)/lastPrice)*100;
+    return {s, lastYear, lastPrice, p2025, p2026, p2027, roi};
+  }).filter(r => r.lastPrice > 0);
+  rows.sort((a,b)=>b.roi-a.roi);
+  const picks = rows.slice(0, topN);
+
+  if(picks.length===0){ status.textContent="No candidates match that sector filter."; resultsPanel.style.display="none"; return; }
+
+  const capitalEach = amount/picks.length;
+  let expectedTotal = 0;
+  table.appendChild(el("tr",{},["Symbol","Company","Sector","Last price","Pred. 2027","Allocated (SAR)","Expected value 2027","ROI to 2027"].map(t=>el("th",{text:t}))));
+  picks.forEach(r => {
+    const c = companyBySymbol[r.s];
+    const units = capitalEach / r.lastPrice;
+    const value2027 = units * r.p2027;
+    expectedTotal += value2027;
+    table.appendChild(el("tr",{},[
+      el("td",{text:r.s}), el("td",{text:c.name}), el("td",{text:c.sector}),
+      el("td",{text:fmt(r.lastPrice,2)}), el("td",{text:fmt(r.p2027,2)}),
+      el("td",{text:fmt(capitalEach,2)}), el("td",{text:fmt(value2027,2)}),
+      el("td",{text:fmt(r.roi,2)+"%"}),
+    ]));
+  });
+  const expectedRoi = ((expectedTotal-amount)/amount)*100;
+  totalsDiv.innerHTML = `
+    <span>Total invested: <b>${fmt(amount,2)} SAR</b></span>
+    <span>Expected value (2027): <b>${fmt(expectedTotal,2)} SAR</b></span>
+    <span>Expected portfolio ROI: <b>${fmt(expectedRoi,2)}%</b></span>
+  `;
+  resultsPanel.style.display = "block";
+  status.textContent = `Ranked ${rows.length} candidates, allocated across the top ${picks.length}.`;
+});
+</script>
+</body>
+</html>
