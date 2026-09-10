@@ -1,19 +1,17 @@
 # data
 
-> **Not populated yet.** No CSVs are committed here — this describes what `tools/extract_dump.py` is designed to produce once it's written. See the root [README](../README.md#status) for current status.
-
-CSV export of the PostgreSQL database in `Namaa_backup.dump`.
+CSV export of the PostgreSQL database in `Namaa_backup.dump` — the real export, committed here, not samples. `historical_prices` (272,235 rows, 9 MB) is the one table excluded by default; see [`../docs/data.md`](../docs/data.md).
 
 Regenerate with:
 
     python tools/extract_dump.py path/to/Namaa_backup.dump
 
-Two files are not exports — they are model output, rewritten by
-`python -m engine.cli train`:
+Three files here are not raw exports:
 
 | File | Contents |
 |---|---|
-| `predicted_prices_rf.csv` | Random Forest projections for 2025-2027, 555 rows |
-| `last_actual_prices.csv` | each company's most recent realised annual average price |
+| `last_close.csv` | one row per symbol, its most recent close price — derived from `historical_prices` by `tools/compute_last_close.py` (needs `--all` on the extract step first) |
+| `predicted_prices_rf.csv` | Random Forest projections for 2025-2027, written by `tools/train_model.py` |
+| `last_actual_prices.csv` | each company's most recent realised annual average price, also written by `tools/train_model.py` |
 
 See `../docs/data.md` for table-level notes and known quirks.
