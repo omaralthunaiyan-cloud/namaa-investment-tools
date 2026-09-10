@@ -1,9 +1,8 @@
-# Rebuilds web/index.html from source and publishes it to GitHub Pages.
+# Publishes web/ to GitHub Pages on every push to main.
 #
-# The site is a single self-contained file, so "deploy" is just: run the
-# esbuild bundle, then upload web/ as the Pages artifact. Building here rather
-# than trusting the committed index.html means the published page can never
-# drift from web/src/.
+# web/index.html + web/data.js are committed as the finished, self-contained
+# build (plain HTML/CSS/JS — no bundler). "Deploy" is just: upload web/ as
+# the Pages artifact.
 
 name: Deploy to Pages
 
@@ -28,17 +27,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Build the self-contained page
-        working-directory: web
-        run: |
-          npm install
-          npm run build
-
-      - name: Fail if the build produced nothing usable
+      - name: Fail if web/index.html is missing
         run: test -s web/index.html
 
       - uses: actions/configure-pages@v5
