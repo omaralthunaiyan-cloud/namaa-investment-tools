@@ -12,9 +12,8 @@
     --blue:#3b9fd9; --blue-light:#52c5f5; --blue-mid:#2b7bb8; --blue-dark:#1f5a8f;
     --slate:#64748b; --mute:#8e9fb5; --ink:#475569; --brand-light:#8ec4ea;
     --surface:#f8fafc; --surface-blue:#f0f7fc;
-    --text: var(--navy); --muted: var(--slate);
+    --text: var(--navy); --muted: var(--slate); --heading: var(--navy);
     --accent: var(--blue); --accent-ink:#ffffff; --accent-soft:#e6f2fb;
-    --warn-bg:#fff7ed; --warn-border:#fde3c0; --warn-text:#92400e;
     --danger-bg:#fef2f2; --danger-border:#fecaca; --danger-text:#b91c1c;
     --table-stripe: var(--surface);
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
@@ -27,9 +26,9 @@
     :root{
       --bg-grad: linear-gradient(135deg, #10182c 0%, #1a2847 40%, #162037 70%, #10182c 100%);
       --panel:#1c2740; --border:#31426b; --border-soft:#293759;
-      --text:#e8edf7; --muted:#9fb0cc;
+      --text:#e8edf7; --muted:#9fb0cc; --heading:#dce8f8;
+      --surface:#25335a; --surface-blue:#1f3155;
       --accent:#52c5f5; --accent-ink:#0c1626; --accent-soft:#22365c;
-      --warn-bg:#2a2115; --warn-border:#5a4520; --warn-text:#e0b568;
       --danger-bg:#301418; --danger-border:#5a2028; --danger-text:#f19aa3;
       --table-stripe:#22304f;
       --shadow: 0 4px 10px rgba(0,0,0,.35);
@@ -45,223 +44,422 @@
       radial-gradient(circle at 82% 92%, rgba(53,74,111,.05) 0%, transparent 50%)}
   a{color:var(--blue-mid);font-weight:600}
   a:hover{color:var(--blue)}
-  .wrap{max-width:1100px;margin:0 auto;padding:32px 20px 72px}
-  header.top{padding-bottom:22px;margin-bottom:8px}
-  .brand-row{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-  .brand-mark{flex:none;width:38px;height:38px}
-  header.top h1{margin:0;font-size:30px;font-weight:800;letter-spacing:-0.02em;color:var(--navy)}
+  button{font-family:inherit}
+  .wrap{max-width:1150px;margin:0 auto;padding:0 20px 90px}
+  svg.icon{width:1em;height:1em;display:inline-block;vertical-align:-0.15em}
+
+  /* ---------- Home / hero ---------- */
+  .view{display:none}
+  .hero{text-align:center;padding:64px 0 56px}
+  .hero .brand-mark-lg{width:130px;height:130px;margin:0 auto 22px;display:block}
+  .hero h1.brand-title{font-size:56px;font-weight:800;letter-spacing:-0.02em;margin:0 0 20px;color:var(--heading)}
   @supports (background-clip:text) or (-webkit-background-clip:text){
-    header.top h1{
-      background:linear-gradient(to right, var(--heading-grad-a), var(--heading-grad-b) 55%, var(--heading-grad-a));
+    .hero h1.brand-title{
+      background:linear-gradient(to right, var(--heading-grad-a), var(--heading-grad-b), var(--heading-grad-a));
       -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
     }
   }
-  header.top p.tag{margin:0 0 16px;color:var(--muted);max-width:70ch;font-size:15px}
-  .badges{display:flex;gap:8px;flex-wrap:wrap;font-size:12.5px;color:var(--slate)}
-  .badges span{border:1px solid var(--border);border-radius:99px;padding:5px 13px;background:var(--surface);font-weight:600}
-  .badges a{border:1px solid var(--border);border-radius:99px;padding:5px 13px;background:var(--surface-blue);text-decoration:none}
-  nav.tabs{display:flex;gap:6px;flex-wrap:wrap;margin:28px 0 24px;padding:6px;background:var(--surface);border:1px solid var(--border);border-radius:14px}
-  nav.tabs button{appearance:none;border:none;background:transparent;color:var(--muted);font-size:13.5px;padding:12px 18px;cursor:pointer;border-radius:10px;font-weight:700;transition:all 200ms}
-  nav.tabs button.active{color:#fff;background:linear-gradient(135deg, var(--navy), var(--blue-mid));box-shadow:var(--shadow)}
-  nav.tabs button:hover:not(.active){color:var(--navy);background:var(--accent-soft)}
-  section.tool{display:none}
-  section.tool.active{display:block}
+  .hero p.lead{font-size:22px;font-weight:300;color:var(--slate);max-width:680px;margin:0 auto;line-height:1.5}
+  .hero p.meta{font-size:15px;color:var(--mute);max-width:620px;margin:18px auto 0}
+
+  .tools-heading{text-align:center;font-size:27px;font-weight:700;color:var(--heading);margin:0 0 42px}
+
+  .tool-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:22px}
+  .tool-card{border-radius:16px;overflow:hidden;background:var(--panel);border:2px solid var(--border-soft);cursor:pointer;display:flex;flex-direction:column;transition:all 300ms;text-align:left;padding:0;font:inherit;color:inherit}
+  .tool-card:hover{border-color:var(--blue);transform:translateY(-8px);box-shadow:var(--shadow-hover)}
+  .tool-card:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .tool-card .bar{height:6px}
+  .tool-card .body{padding:22px;display:flex;flex-direction:column;flex:1}
+  .tool-card .icon-badge{width:54px;height:54px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;box-shadow:0 10px 15px -3px rgba(0,0,0,.15)}
+  .tool-card .icon-badge svg{width:26px;height:26px;color:#fff}
+  .tool-card h3{margin:0 0 10px;font-size:16.5px;font-weight:800;color:var(--heading);line-height:1.3}
+  .tool-card p{margin:0;font-size:13.5px;color:var(--slate);line-height:1.55;flex:1}
+  .tool-card .footer-row{display:flex;align-items:center;justify-content:space-between;margin-top:22px}
+  .tool-card .footer-row .explore{font-size:13.5px;font-weight:700;color:var(--blue)}
+  .tool-card .footer-row svg{width:18px;height:18px;color:var(--blue);transition:transform 250ms}
+  .tool-card:hover .footer-row svg{transform:translateX(4px)}
+  .hero-footer-note{text-align:center;margin-top:64px;font-size:13px;color:var(--mute)}
+
+  /* ---------- Tool pages ---------- */
+  .backlink{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;font-weight:700;color:var(--blue);background:none;border:none;cursor:pointer;padding:0;margin-top:34px}
+  .backlink:hover{color:var(--heading)}
+  .backlink svg{width:15px;height:15px}
+  .page-header{margin:20px 0 0}
+  .page-header h1{font-size:30px;font-weight:800;letter-spacing:-0.01em;color:var(--heading);margin:0 0 6px}
+  .page-header p{font-size:16px;font-weight:600;color:var(--blue);margin:0}
+  .tool-body{margin-top:40px}
+  .stack > * + *{margin-top:20px}
+
+  .two-col{display:grid;grid-template-columns:1fr;gap:20px}
+  @media(min-width:820px){.two-col{grid-template-columns:1fr 1fr}}
+
   .panel{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:28px;box-shadow:var(--shadow)}
-  .panel + .panel{margin-top:20px}
-  h2{font-size:20px;margin:0 0 6px;font-weight:800;letter-spacing:-0.01em;color:var(--text)}
-  h3{font-size:13px;margin:0 0 14px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-  p.desc{color:var(--muted);margin:0 0 20px;max-width:75ch;font-size:14px;line-height:1.6}
-  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:16px}
-  label{display:block;font-size:12px;font-weight:700;color:var(--navy);margin-bottom:6px;letter-spacing:.01em}
-  input[type=number],input[type=text],select{width:100%;padding:11px 13px;border:2px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:14px;font-weight:600;transition:border-color 150ms}
+  h2{font-size:20px;margin:0 0 22px;font-weight:800;letter-spacing:-0.01em;color:var(--text)}
+
+  label{display:block;font-size:12px;font-weight:700;color:var(--heading);margin-bottom:7px;letter-spacing:.01em}
+  input[type=number],input[type=text],select{width:100%;padding:12px 13px;border:2px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-size:14px;font-weight:600;transition:border-color 150ms}
   input:focus,select:focus{outline:none;border-color:var(--accent)}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;max-height:180px;overflow:auto;border:1px solid var(--border);border-radius:12px;padding:12px;background:var(--surface)}
-  .chip{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;border:1px solid var(--border-soft);border-radius:10px;padding:8px 14px;background:var(--panel);cursor:pointer;user-select:none;transition:all 200ms;color:var(--ink)}
+
+  .amount-field{position:relative;margin-bottom:26px}
+  .amount-field input{padding-right:52px}
+  .amount-field .suffix{position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:12.5px;font-weight:800;color:var(--slate)}
+
+  .field-row{display:flex;align-items:flex-end;gap:12px}
+  .field-row > div{flex:1}
+  .field-row .mini-label{font-size:11.5px;color:var(--slate);margin-bottom:7px}
+  .note{font-size:12.5px;color:var(--muted)}
+
+  /* sliders */
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:10px;border-radius:99px;cursor:pointer;background:var(--border)}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--navy);box-shadow:0 2px 6px rgba(0,0,0,.25);cursor:pointer;margin-top:-5px}
+  input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#fff;border:3px solid var(--navy);cursor:pointer}
+  input[type=range]::-moz-range-track{height:10px;border-radius:99px;background:var(--border)}
+
+  .balance-bar{display:flex;height:40px;border-radius:10px;overflow:hidden;border:2px solid var(--border);background:var(--surface);margin:22px 0 12px}
+  .balance-bar .seg{display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#fff;transition:width 300ms}
+  .balance-bar .seg.cov{background:linear-gradient(135deg, var(--navy), #2b5a94)}
+  .balance-bar .seg.profit{background:linear-gradient(135deg, var(--blue), var(--blue-light))}
+  .balance-legend{display:flex;gap:22px;font-size:12px;font-weight:700;margin-bottom:20px;align-items:center;flex-wrap:wrap}
+  .balance-legend .sw{width:12px;height:12px;border-radius:4px;display:inline-block;margin-right:6px;vertical-align:-1px}
+  .balance-legend .sw.cov{background:linear-gradient(135deg, var(--navy), #2b5a94)}
+  .balance-legend .sw.profit{background:linear-gradient(135deg, var(--blue), var(--blue-light))}
+  .balance-legend .cov-label{color:var(--heading)}
+  .balance-legend .profit-label{color:var(--blue)}
+  .balance-legend .label-strategy{margin-left:auto;font-weight:800;color:var(--heading)}
+  .info-box{padding:16px 18px;border-radius:10px;background:var(--surface);border:1px solid var(--border);font-size:13.5px;color:var(--slate);line-height:1.6}
+
+  .slider-value{font-size:12px;font-weight:700;color:var(--heading)}
+  .slider-value b{font-size:18px;color:var(--blue)}
+
+  /* chips */
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chips.grid-sectors{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}
+  .chips.grid-months{display:grid;grid-template-columns:repeat(auto-fill,minmax(72px,1fr))}
+  .chips.grid-years{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr))}
+  .chips.grid-indicators{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr))}
+  .chips.grid-3{display:grid;grid-template-columns:repeat(3,1fr)}
+  .chip{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;border:1px solid var(--border-soft);border-radius:10px;padding:11px 14px;background:var(--panel);cursor:pointer;user-select:none;transition:all 200ms;color:var(--ink);text-align:center}
   .chip:hover{border-color:var(--brand-light);background:var(--surface-blue)}
   .chip input{margin:0}
-  .chip.on{background:var(--accent-soft);border-color:var(--brand-light);color:var(--navy);box-shadow:0 4px 8px rgba(142,196,234,.2);transform:translateY(-1px)}
-  .row-actions{display:flex;gap:14px;align-items:center;margin-top:8px;flex-wrap:wrap}
-  button.primary{background:linear-gradient(135deg, var(--navy), var(--navy-hover));color:var(--accent-ink);border:none;border-radius:10px;padding:13px 26px;font-size:14.5px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(53,74,111,.15);transition:all 250ms}
+  .chip.on{background:var(--accent-soft);border-color:var(--brand-light);color:var(--heading);box-shadow:0 4px 8px rgba(142,196,234,.2);transform:translateY(-1px)}
+  button.chip{appearance:none}
+
+  /* picker header */
+  .picker-head{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:22px}
+  .picker-head .titles h2{margin:0 0 6px}
+  .picker-head .titles p{margin:0;font-size:13.5px;color:var(--slate)}
+  .picker-actions{display:flex;gap:10px;flex-shrink:0}
+  .picker-count{margin-top:22px;text-align:center;font-size:13px;color:var(--slate)}
+
+  /* buttons */
+  button.primary{background:linear-gradient(135deg, var(--navy), var(--navy-hover));color:#fff;border:none;border-radius:10px;padding:14px 30px;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(53,74,111,.15);transition:all 250ms}
   button.primary:hover{transform:translateY(-2px);box-shadow:0 8px 16px rgba(53,74,111,.22)}
-  button.ghost{background:var(--panel);border:1px solid var(--border-soft);color:var(--navy);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all 200ms}
+  button.ghost{background:var(--panel);border:1px solid var(--border-soft);color:var(--heading);border-radius:10px;padding:9px 14px;font-size:13px;font-weight:700;cursor:pointer;transition:all 200ms}
   button.ghost:hover{background:var(--surface-blue);border-color:var(--brand-light)}
-  .note{font-size:12.5px;color:var(--muted)}
-  .warn{background:var(--warn-bg);border:1px solid var(--warn-border);color:var(--warn-text);border-radius:12px;padding:14px 18px;font-size:13.5px;margin-bottom:20px}
-  table{border-collapse:collapse;width:100%;font-size:13.5px}
-  th,td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--border);white-space:nowrap}
-  tbody tr:nth-child(even){background:var(--table-stripe)}
-  th{color:var(--navy);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border)}
-  td{color:var(--text)}
-  .option-card{border:1px solid var(--border);border-radius:14px;padding:18px 20px;margin-bottom:16px;background:var(--surface)}
-  .option-card h4{margin:0 0 10px;font-size:15px;font-weight:800;color:var(--navy)}
-  .kv{display:flex;flex-wrap:wrap;gap:16px;margin-top:12px;font-size:13px;color:var(--muted)}
-  .kv b{color:var(--text)}
-  .empty{color:var(--muted);font-size:13.5px;padding:14px 0}
+  .run-row{text-align:center;padding:6px 0}
+
+  /* error / disclaimer note */
+  .error-note{background:var(--danger-bg);border:2px solid var(--danger-border);border-radius:16px;padding:20px 24px;text-align:center}
+  .error-note p{margin:0;font-size:13.5px;font-weight:600;color:var(--danger-text);line-height:1.6}
+
+  /* tables */
   .tablewrap{overflow-x:auto}
-  footer{margin-top:40px;padding-top:20px;border-top:1px solid var(--border);color:var(--muted);font-size:12.5px}
-  .pill{display:inline-block;font-size:11px;border-radius:99px;padding:3px 11px;background:var(--accent-soft);color:var(--blue-mid);font-weight:800;margin-left:8px;letter-spacing:.02em}
-  .datalist-input{position:relative}
-  .suggestions{position:absolute;z-index:5;left:0;right:0;top:100%;background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-top:6px;max-height:220px;overflow:auto;display:none;box-shadow:var(--shadow-hover)}
-  .suggestions div{padding:9px 13px;cursor:pointer;font-size:13.5px;color:var(--text)}
-  .suggestions div:hover{background:var(--surface-blue);color:var(--navy)}
-  .stat{font-size:12.5px;color:var(--muted)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);white-space:nowrap}
+  tbody tr:nth-child(even){background:var(--table-stripe)}
+  th{color:var(--heading);font-weight:700;font-size:11.5px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border)}
+  td{color:var(--text)}
+  td.accent{color:var(--blue);font-weight:700;font-family:var(--mono)}
+  td.right,th.right{text-align:right}
+
+  .section-label{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--slate);margin-bottom:14px}
+
+  /* option cards (dividend results) */
+  .option-card{margin-top:0}
+  .option-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;padding-bottom:20px;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:14px}
+  .option-head h3{margin:0;font-size:19px;font-weight:800;color:var(--heading)}
+  .score-badge{display:inline-flex;align-items:baseline;gap:9px;padding:11px 28px 11px 22px;border-radius:0 20px 20px 0;background:linear-gradient(135deg, rgba(59,159,217,.08), rgba(53,74,111,.04));border-left:4px solid var(--blue);box-shadow:0 4px 16px rgba(59,159,217,.15)}
+  .score-badge .lbl{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--slate)}
+  .score-badge .val{font-size:30px;font-weight:900;letter-spacing:-.01em;color:var(--heading)}
+  @supports (background-clip:text) or (-webkit-background-clip:text){
+    .score-badge .val{
+      background:linear-gradient(135deg, var(--navy) 0%, var(--blue) 60%, var(--blue-light) 100%);
+      -webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;
+    }
+  }
+
+  /* stat boxes */
+  .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:24px}
+  .stat-box{border-radius:12px;padding:22px;text-align:center;background:var(--surface);border:1px solid var(--border)}
+  .stat-box.accent{background:var(--surface-blue)}
+  .stat-box .lbl{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--slate);margin-bottom:11px}
+  .stat-box .val{font-size:19px;font-weight:800;color:var(--heading)}
+  .stat-box.accent .val{color:var(--blue)}
+
+  /* search / autocomplete */
+  .search-field{position:relative}
+  .search-field svg.icon{position:absolute;left:15px;top:50%;transform:translateY(-50%);width:16px;height:16px;color:var(--slate);pointer-events:none}
+  .search-field input{padding-left:42px}
+  .suggestions{position:absolute;z-index:20;left:0;right:0;top:100%;background:var(--panel);border:1px solid var(--border);border-radius:10px;margin-top:6px;max-height:240px;overflow:auto;display:none;box-shadow:var(--shadow-hover)}
+  .suggestions div{padding:11px 14px;cursor:pointer;font-size:13.5px;color:var(--text)}
+  .suggestions div:hover{background:var(--surface-blue);color:var(--heading)}
+  .suggestions div b{color:var(--blue);font-family:var(--mono)}
+  .company-info{margin-top:18px;padding:15px 17px;border-radius:10px;background:var(--surface);border:1px solid var(--border);font-size:13.5px;color:var(--slate)}
+  .company-info b.sym{font-family:var(--mono);color:var(--blue);font-weight:800}
+  .company-info b.name{color:var(--heading);font-weight:700}
+  .not-found{margin-top:12px;font-size:13.5px;font-weight:600;color:var(--danger-text)}
+  .hint{text-align:center;font-size:13.5px;color:var(--slate)}
+
+  .footnote{margin-top:20px;font-size:12px;color:var(--mute);line-height:1.6}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="top">
-    <div class="brand-row">
-      <svg class="brand-mark" viewBox="0 0 200 200" role="img" aria-label="Namaa">
+<div class="wrap" id="app">
+
+  <!-- ============ HOME ============ -->
+  <section class="view" id="view-home">
+    <div class="hero">
+      <svg class="brand-mark-lg" viewBox="0 0 200 200" role="img" aria-label="Namaa">
         <path d="M46 148 L46 42 L154 148 L154 42" fill="none" stroke="var(--mark-color)" stroke-width="26" stroke-linejoin="round"/>
       </svg>
-      <h1>Namaa — Tadawul Investment Tools</h1>
+      <h1 class="brand-title">Namaa</h1>
+      <p class="lead">Your premier destination for intelligent investment recommendations</p>
+      <p class="meta" id="hero-meta"></p>
     </div>
-    <p class="tag">Four decision tools for Tadawul-listed companies, running entirely in this page against the real IS499 database dump — no server, no install, nothing sent anywhere.</p>
-    <div class="badges">
-      <span id="badge-companies">— companies</span>
-      <span id="badge-payers">— dividend payers</span>
-      <span id="badge-growth">— growth-ranked</span>
-      <span><a href="https://github.com/omaralthunaiyan-cloud/namaa-investment-tools" target="_blank" rel="noopener">source on GitHub</a></span>
+
+    <h2 class="tools-heading">Investment Intelligence Tools</h2>
+
+    <div class="tool-grid">
+      <button class="tool-card" data-nav="dividend" type="button">
+        <div class="bar" style="background:linear-gradient(to right,var(--navy),var(--blue-mid))"></div>
+        <div class="body">
+          <div class="icon-badge" style="background:linear-gradient(135deg,var(--navy),var(--blue-mid))" data-icon="trendingUp"></div>
+          <h3>Recommend Dividend Companies</h3>
+          <p>Discover optimal dividend-paying stocks tailored to your investment goals and risk profile</p>
+          <div class="footer-row"><span class="explore">Explore Now</span><span data-icon="arrowRight"></span></div>
+        </div>
+      </button>
+
+      <button class="tool-card" data-nav="months" type="button">
+        <div class="bar" style="background:linear-gradient(to right,var(--blue),var(--blue-light))"></div>
+        <div class="body">
+          <div class="icon-badge" style="background:linear-gradient(135deg,var(--blue),var(--blue-light))" data-icon="calendar"></div>
+          <h3>Get Companies by Dividend Months</h3>
+          <p>Find companies that distribute dividends in your preferred months for strategic cash flow</p>
+          <div class="footer-row"><span class="explore">Explore Now</span><span data-icon="arrowRight"></span></div>
+        </div>
+      </button>
+
+      <button class="tool-card" data-nav="indices" type="button">
+        <div class="bar" style="background:linear-gradient(to right,var(--blue-mid),var(--blue))"></div>
+        <div class="body">
+          <div class="icon-badge" style="background:linear-gradient(135deg,var(--blue-mid),var(--blue))" data-icon="barChart"></div>
+          <h3>Get Indices for a Company</h3>
+          <p>Access comprehensive market indices and performance metrics for any listed company</p>
+          <div class="footer-row"><span class="explore">Explore Now</span><span data-icon="arrowRight"></span></div>
+        </div>
+      </button>
+
+      <button class="tool-card" data-nav="growth" type="button">
+        <div class="bar" style="background:linear-gradient(to right,var(--blue-dark),var(--navy))"></div>
+        <div class="body">
+          <div class="icon-badge" style="background:linear-gradient(135deg,var(--blue-dark),var(--navy))" data-icon="lineChart"></div>
+          <h3>Recommend Growth Companies</h3>
+          <p>Identify high-potential growth stocks with strong fundamentals and expansion prospects</p>
+          <div class="footer-row"><span class="explore">Explore Now</span><span data-icon="arrowRight"></span></div>
+        </div>
+      </button>
     </div>
-  </header>
 
-  <div class="warn"><b>Not investment advice.</b> Every number here comes from historical filings and a Random Forest model trained on 185 companies (see the Growth tool for the model card). Treat outputs as a ranking signal, not a forecast — check filings before acting on anything.</div>
+    <p class="hero-footer-note">Built with precision for discerning investors</p>
+  </section>
 
-  <nav class="tabs">
-    <button data-tab="dividends" class="active">Recommend Dividend Companies</button>
-    <button data-tab="months">Companies by Dividend Months</button>
-    <button data-tab="indices">Indices for a Company</button>
-    <button data-tab="growth">Recommend Growth Companies</button>
-  </nav>
+  <!-- ============ DIVIDEND ============ -->
+  <section class="view" id="view-dividend">
+    <button class="backlink" data-nav="home" type="button"><span data-icon="arrowLeft"></span>Back to Dashboard</button>
+    <div class="page-header">
+      <h1>Recommend Dividend Companies</h1>
+      <p>Set your amount, balance Coverage and Profit, and choose preferred sectors.</p>
+    </div>
 
-  <!-- ============ TOOL 1: DIVIDENDS ============ -->
-  <section class="tool active" id="tool-dividends">
-    <div class="panel">
-      <h2>Recommend Dividend Companies</h2>
-      <p class="desc">Give it an amount and a split between <i>coverage</i> (how many months of the year the portfolio pays in) and <i>profit</i> (trailing yield). It shortlists the 25 best candidates by <code>yield + 10 × months paid</code>, then searches combinations of that shortlist for the three portfolios that best match your preference.</p>
-      <div class="grid">
-        <div>
-          <label for="d-amount">Amount (SAR)</label>
-          <input type="number" id="d-amount" value="10000" min="1">
+    <div class="tool-body stack">
+      <div class="two-col">
+        <div class="panel">
+          <h2>Investment Details</h2>
+          <label for="d-amount">Investment Amount</label>
+          <div class="amount-field"><input type="number" id="d-amount" value="10000" min="1"><span class="suffix">SAR</span></div>
+          <label>Number of Companies</label>
+          <div class="field-row">
+            <div><div class="mini-label">Minimum</div><select id="d-min"></select></div>
+            <div><div class="mini-label">Maximum</div><select id="d-max"></select></div>
+          </div>
+          <p class="note" style="margin-top:12px">Portfolios are built from every combination in this range.</p>
         </div>
-        <div>
-          <label for="d-cov">Coverage preference</label>
-          <select id="d-cov">
-            <option value="0">0%</option>
-            <option value="25">25%</option>
-            <option value="50" selected>50%</option>
-            <option value="75">75%</option>
-            <option value="100">100%</option>
-          </select>
-        </div>
-        <div>
-          <label>Profit preference</label>
-          <input type="text" id="d-profit-display" disabled value="50%">
-        </div>
-        <div>
-          <label for="d-min">Min companies</label>
-          <input type="number" id="d-min" value="2" min="1" max="8">
-        </div>
-        <div>
-          <label for="d-max">Max companies</label>
-          <input type="number" id="d-max" value="5" min="1" max="8">
+
+        <div class="panel">
+          <h2>Coverage and Profit Preference</h2>
+          <label>Strategy Balance</label>
+          <input type="range" id="d-balance" min="0" max="100" step="25" value="50">
+          <div class="balance-bar">
+            <div class="seg cov" id="d-seg-cov"></div>
+            <div class="seg profit" id="d-seg-profit"></div>
+          </div>
+          <div class="balance-legend">
+            <span class="cov-label"><span class="sw cov"></span>Coverage</span>
+            <span class="profit-label"><span class="sw profit"></span>Profit</span>
+            <span class="label-strategy" id="d-balance-label"></span>
+          </div>
+          <div class="info-box" id="d-balance-desc"></div>
         </div>
       </div>
-      <label>Sectors <span class="note">(none selected = all)</span></label>
-      <div class="chips" id="d-sectors"></div>
-      <div class="row-actions">
-        <button class="primary" id="d-run">Generate portfolios</button>
-        <span class="note" id="d-status"></span>
+
+      <div class="panel">
+        <div class="picker-head">
+          <div class="titles">
+            <h2>Select Preferred Sectors</h2>
+            <p>Choose one or multiple sectors, or select all. Leaving this empty searches every sector.</p>
+          </div>
+          <div class="picker-actions">
+            <button class="ghost" id="d-sectors-all" type="button">Select All</button>
+            <button class="ghost" id="d-sectors-clear" type="button">Clear Selection</button>
+          </div>
+        </div>
+        <div class="chips grid-sectors" id="d-sectors"></div>
+        <p class="picker-count" id="d-sectors-count"></p>
       </div>
-    </div>
-    <div class="panel" id="d-results" style="display:none">
-      <h3>Results</h3>
+
+      <div class="error-note" id="d-error" style="display:none"><p>Enter an investment amount greater than 0 to continue.</p></div>
+      <div class="error-note" id="d-status-error" style="display:none"><p id="d-status-error-text"></p></div>
+
+      <div class="run-row"><button class="primary" id="d-run" type="button">Generate Recommendations</button></div>
+
       <div id="d-options"></div>
     </div>
   </section>
 
-  <!-- ============ TOOL 2: MONTHS ============ -->
-  <section class="tool" id="tool-months">
-    <div class="panel">
-      <h2>Get Companies by Dividend Months</h2>
-      <p class="desc">Pick one or more months. A single month returns companies whose <i>entire</i> 2024 payout year was that month. Several months returns companies whose year was exactly that set. If nothing matches exactly, it falls back to the strongest single-month payer for each month separately.</p>
-      <label>Months</label>
-      <div class="chips" id="m-months"></div>
-      <div class="row-actions">
-        <button class="primary" id="m-run">Search</button>
-        <span class="note" id="m-status"></span>
-      </div>
+  <!-- ============ MONTHS ============ -->
+  <section class="view" id="view-months">
+    <button class="backlink" data-nav="home" type="button"><span data-icon="arrowLeft"></span>Back to Dashboard</button>
+    <div class="page-header">
+      <h1>Get Companies by Dividend Months</h1>
+      <p>Pick the months you want income in, and see which companies pay then.</p>
     </div>
-    <div class="panel" id="m-results" style="display:none">
-      <h3>Results <span id="m-branch" class="pill"></span></h3>
-      <div class="tablewrap"><table id="m-table"></table></div>
+
+    <div class="tool-body stack">
+      <div class="panel">
+        <div class="picker-head">
+          <div class="titles">
+            <h2>Preferred Dividend Months</h2>
+            <p id="m-companies-note"></p>
+          </div>
+          <div class="picker-actions">
+            <button class="ghost" id="m-select-all" type="button">Select All</button>
+            <button class="ghost" id="m-clear" type="button">Clear</button>
+          </div>
+        </div>
+        <div class="chips grid-months" id="m-months"></div>
+        <p class="picker-count" id="m-selected-summary"></p>
+      </div>
+
+      <div class="run-row"><button class="primary" id="m-run" type="button">Find Companies</button></div>
+
+      <div class="error-note" id="m-error" style="display:none"><p id="m-error-text"></p></div>
+
+      <div id="m-results-wrap"></div>
     </div>
   </section>
 
-  <!-- ============ TOOL 3: INDICES ============ -->
-  <section class="tool" id="tool-indices">
-    <div class="panel">
-      <h2>Get Indices for a Company</h2>
-      <p class="desc">Nine annual fundamentals for 246 companies across 2014–2024, gap-filled: a repeated row means "no new filing," not "no change in the business."</p>
-      <div class="grid">
-        <div class="datalist-input">
-          <label for="i-search">Company (symbol or name)</label>
-          <input type="text" id="i-search" placeholder="e.g. 2222 or Saudi Aramco" autocomplete="off">
+  <!-- ============ INDICES ============ -->
+  <section class="view" id="view-indices">
+    <button class="backlink" data-nav="home" type="button"><span data-icon="arrowLeft"></span>Back to Dashboard</button>
+    <div class="page-header">
+      <h1>Get Indices for a Company</h1>
+      <p>Look up a company's financial indicators for any year between 2014 and 2024.</p>
+    </div>
+
+    <div class="tool-body stack">
+      <div class="panel">
+        <h2>Company</h2>
+        <div class="search-field">
+          <span class="icon" data-icon="search"></span>
+          <input type="text" id="i-search" placeholder="Symbol or company name, e.g. 2222 or Aramco" autocomplete="off">
           <div class="suggestions" id="i-suggestions"></div>
         </div>
+        <div id="i-company-info"></div>
+        <p class="not-found" id="i-not-found" style="display:none">Company not found. Please check the input.</p>
       </div>
-      <label>Indicators <span class="note">(none selected = all)</span></label>
-      <div class="chips" id="i-indicators"></div>
-      <label style="margin-top:12px">Years <span class="note">(none selected = all 2014–2024)</span></label>
-      <div class="chips" id="i-years"></div>
-      <div class="row-actions">
-        <button class="primary" id="i-run">Show indices</button>
-        <span class="note" id="i-status"></span>
+
+      <div class="panel" id="i-options-panel" style="display:none">
+        <h2>Indicators</h2>
+        <div class="chips grid-indicators" id="i-indicators"></div>
+
+        <div class="picker-head" style="margin-top:34px">
+          <div class="titles"><h2 style="margin:0">Years</h2></div>
+          <div class="picker-actions">
+            <button class="ghost" id="i-years-all" type="button">All Years</button>
+            <button class="ghost" id="i-years-clear" type="button">Clear</button>
+          </div>
+        </div>
+        <div class="chips grid-years" id="i-years"></div>
       </div>
-    </div>
-    <div class="panel" id="i-results" style="display:none">
-      <h3 id="i-title"></h3>
-      <div class="tablewrap"><table id="i-table"></table></div>
+
+      <div class="error-note" id="i-error" style="display:none"><p id="i-error-text"></p></div>
+
+      <div id="i-results-wrap"></div>
+
+      <p class="hint" id="i-hint">Start by searching for a company above.</p>
     </div>
   </section>
 
-  <!-- ============ TOOL 4: GROWTH ============ -->
-  <section class="tool" id="tool-growth">
-    <div class="panel">
-      <h2>Recommend Growth Companies</h2>
-      <p class="desc">A Random Forest predicts each company's average annual close price for 2025–2027 from its most recent fundamentals. Companies are ranked by projected return to 2027, and capital is split equally across the top of that ranking.</p>
-      <div class="grid">
-        <div>
-          <label for="g-amount">Amount (SAR)</label>
-          <input type="number" id="g-amount" value="15000" min="1">
+  <!-- ============ GROWTH ============ -->
+  <section class="view" id="view-growth">
+    <button class="backlink" data-nav="home" type="button"><span data-icon="arrowLeft"></span>Back to Dashboard</button>
+    <div class="page-header">
+      <h1>Recommend Growth Companies</h1>
+      <p>Rank companies by predicted three-year return and split your capital across them.</p>
+    </div>
+
+    <div class="tool-body stack">
+      <div class="two-col">
+        <div class="panel">
+          <h2>Investment Details</h2>
+          <label for="g-amount">Investment Amount</label>
+          <div class="amount-field"><input type="number" id="g-amount" value="15000" min="1"><span class="suffix">SAR</span></div>
+          <label>Number of Recommendations: <span class="slider-value"><b id="g-topn-val">5</b></span></label>
+          <input type="range" id="g-topn" min="3" max="20" step="1" value="5">
         </div>
-        <div>
-          <label for="g-top">Top N companies</label>
-          <input type="number" id="g-top" value="5" min="1" max="20">
+
+        <div class="panel">
+          <h2>Prediction Horizon</h2>
+          <div class="chips grid-3" id="g-years"></div>
+          <div class="info-box" id="g-horizon-desc" style="margin-top:22px"></div>
         </div>
       </div>
-      <label>Sectors <span class="note">(none selected = all)</span></label>
-      <div class="chips" id="g-sectors"></div>
-      <div class="row-actions">
-        <button class="primary" id="g-run">Generate allocation</button>
-        <span class="note" id="g-status"></span>
+
+      <div class="panel">
+        <div class="picker-head">
+          <div class="titles">
+            <h2>Select Preferred Sectors</h2>
+            <p>Filter the ranking to specific sectors, or leave empty to rank every company with a prediction.</p>
+          </div>
+          <div class="picker-actions">
+            <button class="ghost" id="g-sectors-all" type="button">Select All</button>
+            <button class="ghost" id="g-sectors-clear" type="button">Clear Selection</button>
+          </div>
+        </div>
+        <div class="chips grid-sectors" id="g-sectors"></div>
+        <p class="picker-count" id="g-sectors-count"></p>
       </div>
-    </div>
-    <div class="panel" id="g-results" style="display:none">
-      <h3>Allocation</h3>
-      <div class="tablewrap"><table id="g-table"></table></div>
-      <div class="kv" id="g-totals"></div>
-    </div>
-    <div class="panel">
-      <h3>Model card</h3>
-      <div class="kv" id="g-model"></div>
-      <p class="desc" style="margin-top:10px">This is a regression on financial ratios, not a time-series model — it has no notion of momentum or market conditions. Projections are built by taking each company's <i>latest</i> fundamentals and only changing the year, so they answer "what would this be worth if the books stayed exactly as they are," not "what will happen." Large projected returns are usually companies whose last recorded price was low relative to what their fundamentals imply — sometimes a real mispricing, often a data-recency artefact.</p>
+
+      <div class="error-note" id="g-error" style="display:none"><p>Enter an investment amount greater than 0 to continue.</p></div>
+      <div class="error-note" id="g-status-error" style="display:none"><p id="g-status-error-text"></p></div>
+
+      <div class="run-row"><button class="primary" id="g-run" type="button">Get Recommendations</button></div>
+
+      <div id="g-results-wrap"></div>
     </div>
   </section>
 
-  <footer>
-    Namaa started as an IS499 senior project. This page runs the real database export directly in your browser — see the <a href="https://github.com/omaralthunaiyan-cloud/namaa-investment-tools">repository</a> for the data pipeline, model card, and known quirks in the source data.
-  </footer>
 </div>
 
 <script src="data.js"></script>
@@ -270,16 +468,35 @@
 const D = window.NAMAA_DATA;
 
 // ---------------------------------------------------------------------
+// Icons
+// ---------------------------------------------------------------------
+const ICONS = {
+  arrowRight: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>',
+  arrowLeft: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>',
+  trendingUp: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 9 11 13 15 21 7"/><polyline points="14 7 21 7 21 14"/></svg>',
+  calendar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>',
+  barChart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="12" width="3" height="6"/><rect x="12.5" y="8" width="3" height="10"/><rect x="18" y="5" width="3" height="13"/></svg>',
+  lineChart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="7 14 11 10 14 13 20 6"/></svg>',
+  search: '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.35-4.35"/></svg>',
+};
+document.querySelectorAll("[data-icon]").forEach(el => { el.innerHTML = ICONS[el.dataset.icon] || ""; });
+
+function esc(s){ return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+
+// ---------------------------------------------------------------------
 // Derived lookups
 // ---------------------------------------------------------------------
 const companies = D.companies.map(([symbol, name, sector]) => ({symbol, name, sector}));
 const companyBySymbol = Object.fromEntries(companies.map(c => [c.symbol, c]));
 const sectors = [...new Set(companies.map(c => c.sector))].filter(s => s !== "Unknown").sort();
 const payerSymbols = Object.keys(D.dividendTtm);
+const monthsWithDataCount = Object.keys(D.months2024).length;
+const indicesSymbolCount = Object.keys(D.indices).length;
 
-document.getElementById("badge-companies").textContent = `${companies.length} companies`;
-document.getElementById("badge-payers").textContent = `${payerSymbols.length} dividend payers`;
-document.getElementById("badge-growth").textContent = `${Object.keys(D.growth).length} growth-ranked`;
+document.getElementById("hero-meta").textContent =
+  `Built on ${companies.length} Tadawul-listed companies, ${indicesSymbolCount} with financial indicators from 2014 to 2024`;
+document.getElementById("m-companies-note").textContent =
+  `Based on the 2024 distribution calendar for ${monthsWithDataCount} companies.`;
 
 function fmt(n, dp=2){ if(n===null||n===undefined||Number.isNaN(n)) return "—"; return Number(n).toLocaleString(undefined,{minimumFractionDigits:dp,maximumFractionDigits:dp}); }
 function el(tag, attrs={}, children=[]){
@@ -292,29 +509,33 @@ function el(tag, attrs={}, children=[]){
 }
 
 // ---------------------------------------------------------------------
-// Tabs
+// View routing
 // ---------------------------------------------------------------------
-document.querySelectorAll("nav.tabs button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    document.querySelectorAll("nav.tabs button").forEach(b => b.classList.remove("active"));
-    document.querySelectorAll("section.tool").forEach(s => s.classList.remove("active"));
-    btn.classList.add("active");
-    document.getElementById("tool-" + btn.dataset.tab).classList.add("active");
-  });
+const VIEWS = ["home","dividend","months","indices","growth"];
+function showView(v){
+  VIEWS.forEach(name => { document.getElementById("view-"+name).style.display = (name===v ? "block" : "none"); });
+  window.scrollTo(0,0);
+}
+document.querySelectorAll("[data-nav]").forEach(btn => {
+  btn.addEventListener("click", () => showView(btn.dataset.nav));
 });
+showView("home");
 
 // ---------------------------------------------------------------------
 // Chip helpers
 // ---------------------------------------------------------------------
-function buildChips(container, items, {multi=true}={}){
+function buildChips(container, items, {multi=true, defaultSelected=[], onChange=null}={}){
   container.innerHTML = "";
-  const state = new Set();
+  const state = new Set(defaultSelected);
   items.forEach(({value, label}) => {
-    const chip = el("label", {class:"chip"});
+    const isOn = state.has(value);
+    const chip = el("label", {class: "chip" + (isOn ? " on" : "")});
     const cb = el("input", {type: multi?"checkbox":"radio", value});
+    if(isOn) cb.checked = true;
     cb.addEventListener("change", () => {
       if(cb.checked){ state.add(value); chip.classList.add("on"); }
       else { state.delete(value); chip.classList.remove("on"); }
+      if(onChange) onChange(state);
     });
     chip.appendChild(cb);
     chip.appendChild(document.createTextNode(label));
@@ -323,36 +544,85 @@ function buildChips(container, items, {multi=true}={}){
   return state;
 }
 
-// Sectors chips (shared builder used by tools 1 & 4)
-const dSectorState = buildChips(document.getElementById("d-sectors"), sectors.map(s=>({value:s,label:s})));
-const gSectorState = buildChips(document.getElementById("g-sectors"), sectors.map(s=>({value:s,label:s})));
+function setAllChips(container, state, checked, onChange){
+  container.querySelectorAll("input").forEach(cb => {
+    cb.checked = checked;
+    const chip = cb.closest(".chip");
+    if(checked){ state.add(cb.value); chip.classList.add("on"); }
+    else { state.delete(cb.value); chip.classList.remove("on"); }
+  });
+  if(onChange) onChange(state);
+}
 
-// Months chips (tool 2)
-const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-const mMonthState = buildChips(document.getElementById("m-months"), monthNames.map((n,i)=>({value:String(i+1),label:n})));
-
-// Indicators chips (tool 3)
-const INDICATOR_MAP = {
-  capital: "Capital (SAR M)", total_liabilities: "Total Liabilities (SAR M)", net_income: "Net Income (SAR M)",
-  roe: "Return on Equity", roa: "Return on Assets", eps: "Earnings Per Share",
-  pe: "Price-to-Earnings", bvps: "Book Value Per Share", de: "Debt-to-Equity",
-};
-const PERCENTAGE_FIELDS = new Set(["roe","roa"]);
-const INDICATOR_ORDER = ["capital","total_liabilities","net_income","roe","roa","eps","pe","bvps","de"];
-const iIndicatorState = buildChips(document.getElementById("i-indicators"), INDICATOR_ORDER.map(k=>({value:k,label:INDICATOR_MAP[k]})));
-
-// Years chips (tool 3)
-const years = []; for(let y=2014;y<=2024;y++) years.push(y);
-const iYearState = buildChips(document.getElementById("i-years"), years.map(y=>({value:String(y),label:String(y)})));
-
-// Coverage/profit auto pairing
-document.getElementById("d-cov").addEventListener("change", e => {
-  document.getElementById("d-profit-display").value = (100 - Number(e.target.value)) + "%";
-});
+function buildSingleChips(container, items, initial, onChange){
+  let value = initial;
+  function render(){
+    container.innerHTML = "";
+    items.forEach(({value: v, label}) => {
+      const b = el("button", {type:"button", class:"chip" + (v===value?" on":"")});
+      b.textContent = label;
+      b.addEventListener("click", () => { value = v; render(); if(onChange) onChange(value); });
+      container.appendChild(b);
+    });
+  }
+  render();
+  return { get value(){ return value; } };
+}
 
 // ---------------------------------------------------------------------
 // TOOL 1: Recommend Dividend Companies
 // ---------------------------------------------------------------------
+const dMinSel = document.getElementById("d-min");
+const dMaxSel = document.getElementById("d-max");
+[2,3,4,5,6].forEach(n => { dMinSel.appendChild(el("option",{value:n,text:String(n)})); dMaxSel.appendChild(el("option",{value:n,text:String(n)})); });
+dMinSel.value = "3"; dMaxSel.value = "3";
+
+const dSectorState = buildChips(document.getElementById("d-sectors"), sectors.map(s=>({value:s,label:s})), {
+  onChange: () => updateSectorCount("d")
+});
+document.getElementById("d-sectors-all").addEventListener("click", () => setAllChips(document.getElementById("d-sectors"), dSectorState, true, () => updateSectorCount("d")));
+document.getElementById("d-sectors-clear").addEventListener("click", () => setAllChips(document.getElementById("d-sectors"), dSectorState, false, () => updateSectorCount("d")));
+
+const gSectorState = buildChips(document.getElementById("g-sectors"), sectors.map(s=>({value:s,label:s})), {
+  onChange: () => updateSectorCount("g")
+});
+document.getElementById("g-sectors-all").addEventListener("click", () => setAllChips(document.getElementById("g-sectors"), gSectorState, true, () => updateSectorCount("g")));
+document.getElementById("g-sectors-clear").addEventListener("click", () => setAllChips(document.getElementById("g-sectors"), gSectorState, false, () => updateSectorCount("g")));
+
+function updateSectorCount(prefix){
+  const state = prefix === "d" ? dSectorState : gSectorState;
+  document.getElementById(prefix+"-sectors-count").textContent = `${state.size} of ${sectors.length} sectors selected`;
+}
+updateSectorCount("d"); updateSectorCount("g");
+
+const monthNames = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const monthFullNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+const BALANCE_LABELS = {
+  0:   { label: "All Profit", description: "Fully focused on maximizing profit, with complete priority on performance and return potential." },
+  25:  { label: "Mostly Profit", description: "Focused mainly on profit growth while keeping some attention on dividends for steady and balanced returns." },
+  50:  { label: "Balanced", description: "Focused equally on dividend coverage and profit growth to achieve both stability and steady returns." },
+  75:  { label: "Mostly Coverage", description: "Prioritizes dividend consistency while balancing part of the strategy toward profit growth for a more diversified income approach." },
+  100: { label: "All Coverage", description: "Focused entirely on maximizing dividend opportunities and achieving the broadest payout coverage possible." },
+};
+
+const dBalance = document.getElementById("d-balance");
+function renderBalance(){
+  const v = Number(dBalance.value);
+  dBalance.style.background = `linear-gradient(to right, var(--navy) 0%, var(--blue) ${v}%, var(--border) ${v}%, var(--border) 100%)`;
+  const covSeg = document.getElementById("d-seg-cov");
+  const profSeg = document.getElementById("d-seg-profit");
+  covSeg.style.width = v + "%";
+  profSeg.style.width = (100-v) + "%";
+  covSeg.textContent = v > 20 ? v + "%" : "";
+  profSeg.textContent = (100-v) > 20 ? (100-v) + "%" : "";
+  const info = BALANCE_LABELS[v] || BALANCE_LABELS[50];
+  document.getElementById("d-balance-label").textContent = info.label;
+  document.getElementById("d-balance-desc").textContent = info.description;
+}
+dBalance.addEventListener("input", renderBalance);
+renderBalance();
+
 function combinations(arr, k){
   const results = [];
   const combo = [];
@@ -372,19 +642,32 @@ function coverageTargetMonths(pct){ return {0:0,25:3,50:6,75:9,100:12}[pct] ?? 6
 function coverageCloseness(monthsCount, target){ const diff = Math.abs(monthsCount-target); return Math.max(0, 100-(diff/12)*100); }
 
 document.getElementById("d-run").addEventListener("click", () => {
-  const amount = Number(document.getElementById("d-amount").value) || 0;
-  const covPref = Number(document.getElementById("d-cov").value);
+  const amountField = document.getElementById("d-amount");
+  const amount = Number(amountField.value) || 0;
+  const covPref = Number(dBalance.value);
   const profPref = 100 - covPref;
-  const minC = Math.max(1, Number(document.getElementById("d-min").value) || 1);
-  const maxC = Math.max(minC, Number(document.getElementById("d-max").value) || minC);
+  const minC = Math.min(Number(dMinSel.value), Number(dMaxSel.value));
+  const maxC = Math.max(Number(dMinSel.value), Number(dMaxSel.value));
   const sectorFilter = dSectorState.size ? dSectorState : null;
-  const status = document.getElementById("d-status");
 
-  if(amount <= 0){ status.textContent = "Amount must be greater than 0."; return; }
+  const errBox = document.getElementById("d-error");
+  const statusErrBox = document.getElementById("d-status-error");
+  const statusErrText = document.getElementById("d-status-error-text");
+  const optionsDiv = document.getElementById("d-options");
+  statusErrBox.style.display = "none";
+  errBox.style.display = amount <= 0 ? "block" : "none";
+  if(amount <= 0){ optionsDiv.innerHTML = ""; return; }
 
   let universe = payerSymbols.filter(s => companyBySymbol[s]);
   if(sectorFilter) universe = universe.filter(s => sectorFilter.has(companyBySymbol[s].sector));
-  if(universe.length === 0){ status.textContent = "No companies match that sector filter."; document.getElementById("d-results").style.display="none"; return; }
+  if(universe.length === 0){
+    statusErrText.textContent = "No companies match the selected sector filter (and dividend payers).";
+    statusErrBox.style.display = "block"; optionsDiv.innerHTML = ""; return;
+  }
+  if(universe.length < minC){
+    statusErrText.textContent = `Only ${universe.length} dividend-paying compan${universe.length===1?"y":"ies"} match the selected sectors, but ${minC} are needed. Add another sector or lower the company count.`;
+    statusErrBox.style.display = "block"; optionsDiv.innerHTML = ""; return;
+  }
 
   const lastClose = D.lastClose;
   const monthsMap = D.months2024;
@@ -407,7 +690,10 @@ document.getElementById("d-run").addEventListener("click", () => {
   for(let r=minC; r<=Math.min(maxC, symbols.length); r++){
     allCombos = allCombos.concat(combinations(symbols, r));
   }
-  if(allCombos.length === 0){ status.textContent = "No combinations possible with that company range."; return; }
+  if(allCombos.length === 0){
+    statusErrText.textContent = "No combinations possible with that company range.";
+    statusErrBox.style.display = "block"; optionsDiv.innerHTML = ""; return;
+  }
 
   function scoreCombo(combo){
     const rows = combo.map(s=>bySymbol[s]);
@@ -431,42 +717,66 @@ document.getElementById("d-run").addEventListener("click", () => {
     if(top3.length===3) break;
   }
 
-  const optionsDiv = document.getElementById("d-options");
   optionsDiv.innerHTML = "";
   top3.forEach((opt, idx) => {
     const perCompany = amount / opt.combo.length;
-    const card = el("div",{class:"option-card"});
-    card.appendChild(el("h4",{text:`Option ${idx+1} — score ${opt.score.toFixed(1)}`}));
-    const table = el("table");
-    table.appendChild(el("tr",{},[el("th",{text:"Symbol"}),el("th",{text:"Company"}),el("th",{text:"Amount (SAR)"})]));
-    opt.combo.forEach(s => {
+    const months = [...opt.monthsUnion].sort((a,b)=>a-b);
+    const coveragePct = (months.length/12)*100;
+    const rowsHtml = opt.combo.map(s => {
       const c = companyBySymbol[s];
-      table.appendChild(el("tr",{},[el("td",{text:s}),el("td",{text:c.name}),el("td",{text:fmt(perCompany,2)})]));
-    });
-    card.appendChild(table);
-    const months = [...opt.monthsUnion].sort((a,b)=>a-b).map(m=>monthNames[m-1]).join(", ") || "none";
-    card.appendChild(el("div",{class:"kv"},[
-      el("span",{html:`<b>${((opt.monthsUnion.size/12)*100).toFixed(1)}%</b> coverage`}),
-      el("span",{html:`<b>${months}</b>`}),
-      el("span",{html:`<b>${opt.avgYield.toFixed(2)}%</b> avg. yield`}),
-    ]));
-    optionsDiv.appendChild(card);
+      return `<tr><td class="accent">${esc(s)}</td><td>${esc(c.name)}</td><td class="right">${fmt(perCompany,2)}</td></tr>`;
+    }).join("");
+    const panel = el("div", {class:"panel option-card", html: `
+      <div class="option-head">
+        <h3>Option ${idx+1}</h3>
+        <div class="score-badge"><span class="lbl">Score</span><span class="val">${opt.score.toFixed(1)}</span></div>
+      </div>
+      <div class="section-label">Recommended Companies</div>
+      <div class="tablewrap"><table>
+        <tr><th>Symbol</th><th>Company Name</th><th class="right">Amount (SAR)</th></tr>
+        ${rowsHtml}
+      </table></div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="lbl">Coverage</div><div class="val">${coveragePct.toFixed(2)}%</div></div>
+        <div class="stat-box accent"><div class="lbl">Average Profit</div><div class="val">${opt.avgYield.toFixed(2)}%</div></div>
+        <div class="stat-box"><div class="lbl">Months Covered</div><div class="val">${months.map(m=>monthNames[m-1]).join(", ") || "—"}</div></div>
+      </div>
+    `});
+    optionsDiv.appendChild(panel);
   });
-  document.getElementById("d-results").style.display = "block";
-  status.textContent = `${scored.length.toLocaleString()} combinations scored from a shortlist of ${shortlist.length}.`;
 });
 
 // ---------------------------------------------------------------------
 // TOOL 2: Get Companies by Dividend Months
 // ---------------------------------------------------------------------
+const mMonthState = buildChips(document.getElementById("m-months"), monthNames.map((n,i)=>({value:String(i+1),label:n})), {
+  defaultSelected: ["3"],
+  onChange: updateMonthsSummary
+});
+function updateMonthsSummary(){
+  const ordered = [...mMonthState].map(Number).sort((a,b)=>a-b);
+  document.getElementById("m-selected-summary").textContent = ordered.length
+    ? ordered.map(m=>monthFullNames[m-1]).join(", ")
+    : "No months selected";
+}
+updateMonthsSummary();
+document.getElementById("m-select-all").addEventListener("click", () => setAllChips(document.getElementById("m-months"), mMonthState, true, updateMonthsSummary));
+document.getElementById("m-clear").addEventListener("click", () => setAllChips(document.getElementById("m-months"), mMonthState, false, updateMonthsSummary));
+
+const MODE_NOTE = {
+  single: "Companies whose only 2024 distribution fell in this month, ranked by trailing dividend.",
+  exact: "Companies whose 2024 distribution months match your selection exactly.",
+  fallback: "No company matches that exact combination, so here is the strongest single-month payer for each month you picked.",
+};
+
 document.getElementById("m-run").addEventListener("click", () => {
   const selected = [...mMonthState].map(Number).sort((a,b)=>a-b);
-  const status = document.getElementById("m-status");
-  const resultsPanel = document.getElementById("m-results");
-  const table = document.getElementById("m-table");
-  const branchPill = document.getElementById("m-branch");
-  table.innerHTML = "";
-  if(selected.length===0){ status.textContent = "Pick at least one month."; resultsPanel.style.display="none"; return; }
+  const errBox = document.getElementById("m-error");
+  const errText = document.getElementById("m-error-text");
+  const wrap = document.getElementById("m-results-wrap");
+  wrap.innerHTML = "";
+  if(selected.length === 0){ errText.textContent = "Select at least one month."; errBox.style.display = "block"; return; }
+  errBox.style.display = "none";
 
   const monthsMap = D.months2024;
   const selectedSet = new Set(selected);
@@ -481,15 +791,14 @@ document.getElementById("m-run").addEventListener("click", () => {
   }
 
   let rows = [];
-  let branch = "";
-
+  let mode = "";
   const exact = exactMatchSymbols(selectedSet);
   if(exact.length){
-    branch = "exact match";
+    mode = "exact";
     rows = exact.map(s => ({s, ttm: D.dividendTtm[s]||0, months: monthsMap[s]}));
     rows.sort((a,b)=> b.ttm - a.ttm);
   } else {
-    branch = "fallback: strongest single-month payer per month";
+    mode = "fallback";
     for(const m of selected){
       const only = exactMatchSymbols(new Set([m]));
       if(only.length===0) continue;
@@ -498,66 +807,103 @@ document.getElementById("m-run").addEventListener("click", () => {
       rows.push({s, ttm: D.dividendTtm[s]||0, months:[m]});
     }
   }
+  if(selected.length === 1) mode = exact.length ? "single" : mode;
 
   if(rows.length===0){
-    status.textContent = "No companies found for that combination, including the fallback.";
-    resultsPanel.style.display = "none";
+    errText.textContent = "No companies found for that combination, including the fallback.";
+    errBox.style.display = "block";
     return;
   }
 
-  branchPill.textContent = branch;
-  table.appendChild(el("tr",{},[el("th",{text:"Symbol"}),el("th",{text:"Company"}),el("th",{text:"Sector"}),el("th",{text:"Months paid (2024)"}),el("th",{text:"Trailing dividend"})]));
+  // one row per (company, month) pair, like the reference table
+  const flatRows = [];
   rows.forEach(r => {
     const c = companyBySymbol[r.s];
     if(!c) return;
-    table.appendChild(el("tr",{},[
-      el("td",{text:r.s}), el("td",{text:c.name}), el("td",{text:c.sector}),
-      el("td",{text:r.months.map(m=>monthNames[m-1]).join(", ")}),
-      el("td",{text:fmt(r.ttm,4)}),
-    ]));
+    r.months.forEach(m => flatRows.push({symbol:r.s, name:c.name, sector:c.sector, month:m}));
   });
-  resultsPanel.style.display = "block";
-  status.textContent = `${rows.length} companies.`;
+
+  const tableRows = flatRows.map(r => `<tr><td class="accent">${esc(r.symbol)}</td><td>${esc(r.name)}</td><td>${esc(r.sector)}</td><td class="right">${monthFullNames[r.month-1]}</td></tr>`).join("");
+
+  wrap.innerHTML = `
+    <div class="panel">
+      <div class="section-label" style="margin-bottom:6px">Results</div>
+      <p class="note" style="margin-bottom:20px">${MODE_NOTE[mode]}</p>
+      <div class="tablewrap"><table>
+        <tr><th>Symbol</th><th>Company</th><th>Sector</th><th class="right">Month</th></tr>
+        ${tableRows}
+      </table></div>
+      <p class="footnote">${flatRows.length} result${flatRows.length===1?"":"s"}</p>
+    </div>
+  `;
 });
 
 // ---------------------------------------------------------------------
 // TOOL 3: Get Indices for a Company
 // ---------------------------------------------------------------------
+const INDICATOR_MAP = {
+  capital: "Capital (SAR M)", total_liabilities: "Total Liabilities (SAR M)", net_income: "Net Income (SAR M)",
+  roe: "Return on Equity", roa: "Return on Assets", eps: "Earnings Per Share",
+  pe: "Price-to-Earnings Ratio", bvps: "Book Value Per Share", de: "Debt-to-Equity Ratio",
+};
+const PERCENTAGE_FIELDS = new Set(["roe","roa"]);
+const INDICATOR_ORDER = ["capital","total_liabilities","net_income","roe","roa","eps","pe","bvps","de"];
+const iIndicatorState = buildChips(document.getElementById("i-indicators"), INDICATOR_ORDER.map(k=>({value:k,label:INDICATOR_MAP[k]})), {
+  defaultSelected: ["roe","roa","eps","pe"],
+  onChange: renderIndices
+});
+
+const years = []; for(let y=2014;y<=2024;y++) years.push(y);
+const iYearState = buildChips(document.getElementById("i-years"), years.map(y=>({value:String(y),label:String(y)})), {
+  defaultSelected: ["2022","2023","2024"],
+  onChange: renderIndices
+});
+document.getElementById("i-years-all").addEventListener("click", () => setAllChips(document.getElementById("i-years"), iYearState, true, renderIndices));
+document.getElementById("i-years-clear").addEventListener("click", () => setAllChips(document.getElementById("i-years"), iYearState, false, renderIndices));
+
 let iSelectedSymbol = null;
 const iSearch = document.getElementById("i-search");
 const iSuggestions = document.getElementById("i-suggestions");
 
-iSearch.addEventListener("input", () => {
-  const q = iSearch.value.trim().toLowerCase();
-  iSelectedSymbol = null;
-  iSuggestions.innerHTML = "";
-  if(!q){ iSuggestions.style.display="none"; return; }
-  const matches = companies.filter(c => c.symbol.toLowerCase()===q) .concat(
-    companies.filter(c => c.symbol.toLowerCase()!==q && (c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)))
-  ).filter((c,i,arr)=>arr.indexOf(c)===i).slice(0,15);
-  if(matches.length===0){ iSuggestions.style.display="none"; return; }
-  matches.forEach(c => {
-    const row = el("div",{text:`${c.symbol} — ${c.name}`});
-    row.addEventListener("click", () => {
-      iSearch.value = `${c.symbol} — ${c.name}`;
-      iSelectedSymbol = c.symbol;
-      iSuggestions.style.display = "none";
-    });
-    iSuggestions.appendChild(row);
-  });
-  iSuggestions.style.display = "block";
-});
-document.addEventListener("click", (e) => { if(!e.target.closest(".datalist-input")) iSuggestions.style.display="none"; });
-
 function resolveCompanyInput(raw){
-  if(iSelectedSymbol) return iSelectedSymbol;
   const q = raw.trim().toLowerCase();
   if(!q) return null;
+  if(iSelectedSymbol && companyBySymbol[iSelectedSymbol]){
+    const c = companyBySymbol[iSelectedSymbol];
+    if(q === c.symbol.toLowerCase() || q === c.name.toLowerCase() || q === `${c.symbol} — ${c.name}`.toLowerCase()) return iSelectedSymbol;
+  }
   const bySymbol = companies.find(c => c.symbol.toLowerCase()===q);
   if(bySymbol) return bySymbol.symbol;
   const byName = companies.find(c => c.name.toLowerCase().includes(q));
   return byName ? byName.symbol : null;
 }
+
+iSearch.addEventListener("input", () => {
+  iSelectedSymbol = null;
+  const q = iSearch.value.trim().toLowerCase();
+  iSuggestions.innerHTML = "";
+  if(!q){ iSuggestions.style.display="none"; renderIndices(); return; }
+  const starts = companies.filter(c => c.symbol.toLowerCase().startsWith(q) || c.name.toLowerCase().startsWith(q));
+  const contains = companies.filter(c => !starts.includes(c) && (c.symbol.toLowerCase().includes(q) || c.name.toLowerCase().includes(q)));
+  const matches = starts.concat(contains).slice(0,6);
+  if(matches.length){
+    matches.forEach(c => {
+      const row = el("div", {html:`<b>${esc(c.symbol)}</b> — ${esc(c.name)}`});
+      row.addEventListener("mousedown", () => {
+        iSelectedSymbol = c.symbol;
+        iSearch.value = `${c.symbol} — ${c.name}`;
+        iSuggestions.style.display = "none";
+        renderIndices();
+      });
+      iSuggestions.appendChild(row);
+    });
+    iSuggestions.style.display = "block";
+  } else {
+    iSuggestions.style.display = "none";
+  }
+  renderIndices();
+});
+document.addEventListener("click", (e) => { if(!e.target.closest(".search-field")) iSuggestions.style.display="none"; });
 
 function decodeIndices(symbol){
   const entries = D.indices[symbol];
@@ -576,108 +922,158 @@ function decodeIndices(symbol){
   return rows;
 }
 
-document.getElementById("i-run").addEventListener("click", () => {
-  const status = document.getElementById("i-status");
-  const resultsPanel = document.getElementById("i-results");
-  const table = document.getElementById("i-table");
-  const title = document.getElementById("i-title");
-  table.innerHTML = "";
+function renderIndices(){
+  const query = iSearch.value;
+  const symbol = resolveCompanyInput(query);
+  const optionsPanel = document.getElementById("i-options-panel");
+  const infoDiv = document.getElementById("i-company-info");
+  const notFound = document.getElementById("i-not-found");
+  const errBox = document.getElementById("i-error");
+  const errText = document.getElementById("i-error-text");
+  const wrap = document.getElementById("i-results-wrap");
+  const hint = document.getElementById("i-hint");
 
-  const symbol = resolveCompanyInput(iSearch.value);
-  if(!symbol){ status.textContent = "Company not found."; resultsPanel.style.display="none"; return; }
+  if(!symbol){
+    optionsPanel.style.display = "none";
+    infoDiv.innerHTML = "";
+    errBox.style.display = "none";
+    wrap.innerHTML = "";
+    notFound.style.display = query.trim() ? "block" : "none";
+    hint.style.display = query.trim() ? "none" : "block";
+    return;
+  }
+  notFound.style.display = "none";
+  hint.style.display = "none";
+  optionsPanel.style.display = "block";
   const company = companyBySymbol[symbol];
+  infoDiv.innerHTML = `<div class="company-info"><b class="sym">${esc(symbol)}</b> · <b class="name">${esc(company.name)}</b> · ${esc(company.sector)}</div>`;
 
-  let indicators = [...iIndicatorState];
-  if(indicators.length===0) indicators = INDICATOR_ORDER.slice();
-  indicators = INDICATOR_ORDER.filter(k => indicators.includes(k));
+  const indicators = INDICATOR_ORDER.filter(k => iIndicatorState.has(k));
+  const selYears = [...iYearState].map(Number).sort((a,b)=>a-b);
 
-  let selYears = [...iYearState].map(Number);
-  if(selYears.length===0) selYears = years.slice();
-  selYears.sort((a,b)=>a-b);
+  if(!indicators.length){ errText.textContent = "Select at least one indicator."; errBox.style.display="block"; wrap.innerHTML=""; return; }
+  if(!selYears.length){ errText.textContent = "Select at least one year."; errBox.style.display="block"; wrap.innerHTML=""; return; }
 
   const allRows = decodeIndices(symbol);
   const rows = allRows.filter(r => selYears.includes(r.year) && r.vals);
-  if(rows.length===0){ status.textContent = "No data available for that company/year selection."; resultsPanel.style.display="none"; return; }
+  if(rows.length===0){ errText.textContent = "No data available for the selected years."; errBox.style.display="block"; wrap.innerHTML=""; return; }
+  errBox.style.display = "none";
 
-  title.textContent = `${company.name} (${symbol}) — ${company.sector}`;
-  const header = el("tr",{},[el("th",{text:"Year"})].concat(indicators.map(k=>el("th",{text:INDICATOR_MAP[k]}))));
-  table.appendChild(header);
-  rows.forEach(r => {
-    const cells = [el("td",{text:String(r.year)})];
-    indicators.forEach(k => {
+  const headerHtml = `<th>Year</th>` + indicators.map(k => `<th class="right">${INDICATOR_MAP[k]}</th>`).join("");
+  const bodyHtml = rows.map(r => {
+    const cells = indicators.map(k => {
       const idx = INDICATOR_ORDER.indexOf(k);
       const v = r.vals[idx];
       let display = "—";
       if(v !== null && v !== undefined){
         display = PERCENTAGE_FIELDS.has(k) ? fmt(v*100,2)+"%" : fmt(v,2);
       }
-      cells.push(el("td",{text:display}));
-    });
-    table.appendChild(el("tr",{},cells));
-  });
-  resultsPanel.style.display = "block";
-  status.textContent = `${rows.length} year(s).`;
-});
+      return `<td class="right">${display}</td>`;
+    }).join("");
+    return `<tr><td>${r.year}</td>${cells}</tr>`;
+  }).join("");
+
+  wrap.innerHTML = `
+    <div class="panel">
+      <div class="tablewrap"><table><tr>${headerHtml}</tr>${bodyHtml}</table></div>
+      <p class="footnote">Capital, Total Liabilities and Net Income are in SAR millions. Rows repeat where the source data carried the same annual figures forward.</p>
+    </div>
+  `;
+}
 
 // ---------------------------------------------------------------------
 // TOOL 4: Recommend Growth Companies
 // ---------------------------------------------------------------------
-const mm = D.modelMetrics;
-document.getElementById("g-model").innerHTML = `
-  <span><b>${mm.r2.toFixed(4)}</b> held-out R²</span>
-  <span><b>${mm.rmse.toFixed(2)} SAR</b> RMSE</span>
-  <span><b>${mm.mae.toFixed(2)} SAR</b> MAE</span>
-  <span><b>${mm.model_base_companies}</b> companies trained on</span>
-  <span><b>${mm.model_base_rows}</b> training rows</span>
-`;
+const GROWTH_YEARS = [2025, 2026, 2027];
+const gYearPicker = buildSingleChips(document.getElementById("g-years"), GROWTH_YEARS.map(y=>({value:y,label:String(y)})), 2027, renderHorizonDesc);
+function renderHorizonDesc(){
+  document.getElementById("g-horizon-desc").textContent =
+    `A Random Forest Regressor trained on capital, liabilities, net income, ROE, ROA, P/E, EPS, BVPS and D/E across 2014–2024 predicts each company's average close price. Return is measured from its last actual annual average price to ${gYearPicker.value}.`;
+}
+renderHorizonDesc();
+
+const gTopN = document.getElementById("g-topn");
+const gTopNVal = document.getElementById("g-topn-val");
+function renderTopNSlider(){
+  const v = Number(gTopN.value);
+  gTopNVal.textContent = v;
+  const pct = ((v-3)/17)*100;
+  gTopN.style.background = `linear-gradient(to right, var(--navy) 0%, var(--blue-light) ${pct}%, var(--border) ${pct}%, var(--border) 100%)`;
+}
+gTopN.addEventListener("input", renderTopNSlider);
+renderTopNSlider();
 
 document.getElementById("g-run").addEventListener("click", () => {
   const amount = Number(document.getElementById("g-amount").value) || 0;
-  const topN = Math.max(1, Number(document.getElementById("g-top").value) || 1);
+  const topN = Math.max(1, Number(gTopN.value) || 1);
+  const targetYear = gYearPicker.value;
   const sectorFilter = gSectorState.size ? gSectorState : null;
-  const status = document.getElementById("g-status");
-  const resultsPanel = document.getElementById("g-results");
-  const table = document.getElementById("g-table");
-  const totalsDiv = document.getElementById("g-totals");
-  table.innerHTML = ""; totalsDiv.innerHTML = "";
 
-  if(amount<=0){ status.textContent="Amount must be greater than 0."; resultsPanel.style.display="none"; return; }
+  const errBox = document.getElementById("g-error");
+  const statusErrBox = document.getElementById("g-status-error");
+  const statusErrText = document.getElementById("g-status-error-text");
+  const wrap = document.getElementById("g-results-wrap");
+  statusErrBox.style.display = "none";
+  errBox.style.display = amount <= 0 ? "block" : "none";
+  if(amount <= 0){ wrap.innerHTML = ""; return; }
 
   let candidates = Object.keys(D.growth).filter(s => companyBySymbol[s]);
   if(sectorFilter) candidates = candidates.filter(s => sectorFilter.has(companyBySymbol[s].sector));
+  const slot = GROWTH_YEARS.indexOf(targetYear);
   const rows = candidates.map(s => {
     const [lastYear, lastPrice, p2025, p2026, p2027] = D.growth[s];
-    const roi = ((p2027-lastPrice)/lastPrice)*100;
-    return {s, lastYear, lastPrice, p2025, p2026, p2027, roi};
-  }).filter(r => r.lastPrice > 0);
+    const preds = [p2025, p2026, p2027];
+    const target = preds[slot];
+    const roi = ((target-lastPrice)/lastPrice)*100;
+    return {s, lastYear, lastPrice, target, roi};
+  }).filter(r => r.lastPrice > 0 && r.target != null);
   rows.sort((a,b)=>b.roi-a.roi);
   const picks = rows.slice(0, topN);
 
-  if(picks.length===0){ status.textContent="No candidates match that sector filter."; resultsPanel.style.display="none"; return; }
+  if(picks.length===0){
+    statusErrText.textContent = "No companies with price predictions match the selected sectors.";
+    statusErrBox.style.display = "block"; wrap.innerHTML = ""; return;
+  }
 
   const capitalEach = amount/picks.length;
   let expectedTotal = 0;
-  table.appendChild(el("tr",{},["Symbol","Company","Sector","Last price","Pred. 2027","Allocated (SAR)","Expected value 2027","ROI to 2027"].map(t=>el("th",{text:t}))));
-  picks.forEach(r => {
+  const bodyRows = picks.map(r => {
     const c = companyBySymbol[r.s];
     const units = capitalEach / r.lastPrice;
-    const value2027 = units * r.p2027;
-    expectedTotal += value2027;
-    table.appendChild(el("tr",{},[
-      el("td",{text:r.s}), el("td",{text:c.name}), el("td",{text:c.sector}),
-      el("td",{text:fmt(r.lastPrice,2)}), el("td",{text:fmt(r.p2027,2)}),
-      el("td",{text:fmt(capitalEach,2)}), el("td",{text:fmt(value2027,2)}),
-      el("td",{text:fmt(r.roi,2)+"%"}),
-    ]));
-  });
+    const value = units * r.target;
+    expectedTotal += value;
+    const roiText = `${r.roi>0?"+":""}${r.roi.toFixed(2)}%`;
+    return `<tr>
+      <td class="accent">${esc(r.s)}</td>
+      <td>${esc(c.name)}</td>
+      <td class="right">${fmt(r.lastPrice,2)} (${r.lastYear})</td>
+      <td class="right">${fmt(r.target,2)}</td>
+      <td class="right">${roiText}</td>
+      <td class="right">${fmt(capitalEach,2)}</td>
+      <td class="right">${fmt(value,2)}</td>
+    </tr>`;
+  }).join("");
+
   const expectedRoi = ((expectedTotal-amount)/amount)*100;
-  totalsDiv.innerHTML = `
-    <span>Total invested: <b>${fmt(amount,2)} SAR</b></span>
-    <span>Expected value (2027): <b>${fmt(expectedTotal,2)} SAR</b></span>
-    <span>Expected portfolio ROI: <b>${fmt(expectedRoi,2)}%</b></span>
+
+  wrap.innerHTML = `
+    <div class="panel">
+      <h2 style="margin-bottom:20px">Top ${picks.length} by predicted return to ${targetYear}</h2>
+      <div class="tablewrap"><table>
+        <tr><th>Symbol</th><th>Company</th><th class="right">Last Actual</th><th class="right">Predicted ${targetYear}</th><th class="right">Return</th><th class="right">Allocated (SAR)</th><th class="right">Expected Value</th></tr>
+        ${bodyRows}
+      </table></div>
+      <p class="footnote">Capital is split equally across the picks, with fractional shares. Ranked out of ${rows.length} companies that have predictions.</p>
+    </div>
+    <div class="stat-grid">
+      <div class="stat-box"><div class="lbl">Total Invested</div><div class="val">${fmt(amount,2)} SAR</div></div>
+      <div class="stat-box accent"><div class="lbl">Expected Value ${targetYear}</div><div class="val">${fmt(expectedTotal,2)} SAR</div></div>
+      <div class="stat-box"><div class="lbl">Expected Return</div><div class="val">${expectedRoi>0?"+":""}${expectedRoi.toFixed(2)}%</div></div>
+    </div>
+    <div class="error-note">
+      <p>These are model projections from historical financials, not investment advice. The model assumes each company's financial profile stays flat, so treat the numbers as a ranking signal rather than a price forecast.</p>
+    </div>
   `;
-  resultsPanel.style.display = "block";
-  status.textContent = `Ranked ${rows.length} candidates, allocated across the top ${picks.length}.`;
 });
 </script>
 </body>
